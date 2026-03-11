@@ -261,7 +261,6 @@ Supabase Auth を使用したメール＋パスワード認証です。管理者
 | user_id | uuid (FK) | users.id への外部キー |
 | question_id | uuid (FK) | questions.id への外部キー |
 | result | text | correct / wrong / skipped |
-| is_bookmarked | boolean | ブックマークフラグ |
 | answered_at | timestamptz | 回答日時 |
 | stability | real | FSRS の安定性パラメータ |
 | difficulty_fsrs | real | FSRS の難易度パラメータ |
@@ -273,6 +272,17 @@ Supabase Auth を使用したメール＋パスワード認証です。管理者
 | last_review | timestamptz | 最終復習日時 |
 | updated_at | timestamptz | 更新日時 |
 | deleted_at | timestamptz | 論理削除日時 |
+
+### bookmarks テーブル
+
+| カラム名 | 型 | 説明 |
+|---|---|---|
+| id | uuid (PK) | 主キー |
+| user_id | uuid (FK) | users.id への外部キー |
+| question_id | uuid (FK) | questions.id への外部キー |
+| created_at | timestamptz | ブックマーク日時 |
+
+> 未回答の問題もブックマーク可能。INSERT/DELETE のトグル操作で管理する。
 
 ---
 
