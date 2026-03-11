@@ -1,0 +1,108 @@
+// Prisma はマイグレーション管理のみに使用。
+// データアクセスは supabase-js を使用するため @prisma/client は不要。
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL")
+}
+
+model users {
+  id           String      @id @db.Uuid
+  display_name String      @default("") @db.Text
+  avatar_url   String      @default("") @db.Text
+  created_at   DateTime    @default(now()) @db.Timestamptz()
+  updated_at   DateTime?   @db.Timestamptz()
+  deleted_at   DateTime?   @db.Timestamptz()
+
+  progress  progress[]
+  bookmarks bookmarks[]
+}
+
+model categories {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name_ja    String    @unique @db.Text
+  name_en    String    @default("") @db.Text
+  sort_order Int       @default(0)
+  created_at DateTime  @default(now()) @db.Timestamptz()
+  updated_at DateTime? @db.Timestamptz()
+  deleted_at DateTime? @db.Timestamptz()
+
+  topics topics[]
+}
+
+model topics {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  category_id String    @db.Uuid
+  name_ja     String    @db.Text
+  name_en     String    @default("") @db.Text
+  sort_order  Int       @default(0)
+  created_at  DateTime  @default(now()) @db.Timestamptz()
+  updated_at  DateTime? @db.Timestamptz()
+  deleted_at  DateTime? @db.Timestamptz()
+
+  category  categories  @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  questions questions[]
+
+  @@index([category_id], map: "idx_topics_category_id")
+}
+
+model questions {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  topic_id       String    @db.Uuid
+  type           String    @db.Text
+  difficulty     String    @db.Text
+  question_ja    String    @db.Text
+  question_en    String    @default("") @db.Text
+  options        Json?
+  answer         Json
+  explanation_ja String    @default("") @db.Text
+  explanation_en String    @default("") @db.Text
+  created_at     DateTime  @default(now()) @db.Timestamptz()
+  updated_at     DateTime? @db.Timestamptz()
+  deleted_at     DateTime? @db.Timestamptz()
+
+  topic     topics      @relation(fields: [topic_id], references: [id], onDelete: Cascade)
+  progress  progress[]
+  bookmarks bookmarks[]
+
+  @@index([topic_id], map: "idx_questions_topic_id")
+  @@index([topic_id, difficulty], map: "idx_questions_topic_difficulty")
+}
+
+model progress {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id         String    @db.Uuid
+  question_id     String    @db.Uuid
+  result          String    @db.Text
+  answered_at     DateTime  @default(now()) @db.Timestamptz()
+  stability       Float?    @db.Real
+  difficulty_fsrs Float?    @db.Real
+  due_date        DateTime? @db.Timestamptz()
+  rating          Int?
+  reps            Int       @default(0)
+  lapses          Int       @default(0)
+  state           Int       @default(0)
+  last_review     DateTime? @db.Timestamptz()
+  updated_at      DateTime? @db.Timestamptz()
+  deleted_at      DateTime? @db.Timestamptz()
+
+  user     users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  question questions @relation(fields: [question_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, question_id])
+  @@index([user_id], map: "idx_progress_user_id")
+}
+
+model bookmarks {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id     String   @db.Uuid
+  question_id String   @db.Uuid
+  created_at  DateTime @default(now()) @db.Timestamptz()
+
+  user     users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  question questions @relation(fields: [question_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, question_id])
+  @@index([user_id], map: "idx_bookmarks_user_id")
+}

@@ -18,9 +18,13 @@
 ## 開発コマンド
 
 ```bash
-pnpm install    # 依存関係インストール
-pnpm dev        # ローカル開発サーバー (http://localhost:3000)
-pnpm build      # プロダクションビルド
+pnpm install          # 依存関係インストール
+pnpm dev              # ローカル開発サーバー (http://localhost:3000)
+pnpm build            # プロダクションビルド
+pnpm db:migrate       # DBマイグレーション実行（dev）
+pnpm db:migrate:prod  # DBマイグレーション実行（prod）
+pnpm db:seed          # シードデータ投入（dev）
+pnpm db:seed:prod     # シードデータ投入（prod）
 ```
 
 ## ディレクトリ構成規約（実装時）
