@@ -1,17 +1,14 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import ExplainSession from '@/components/explain/ExplainSession';
 
 const ExplainPage = () => {
   const params = useParams<{ topicId: string }>();
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold">口頭説明モード</h1>
-      <p className="mt-2 text-gray-600 dark:text-gray-400">
-        Topic ID: {params.topicId}
-      </p>
-      {/* TODO: ExplainSession コンポーネント */}
+    <div className="mx-auto max-w-3xl px-4 py-8">
+      <ExplainSession topicId={params.topicId} />
     </div>
   );
 };
