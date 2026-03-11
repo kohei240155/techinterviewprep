@@ -1,4 +1,4 @@
-# TechPrep
+# TechInterviewPrep
 
 ## プロジェクト概要
 
@@ -58,7 +58,7 @@ pnpm build      # プロダクションビルド
 
 ## 設計ドキュメント
 
-- `TechPrep_spec.md` → アプリ仕様書
+- `TechInterviewPrep_spec.md` → アプリ仕様書
 - `docs/database-design.md` → DB設計・ER図・マイグレーション
 - `docs/api-design.md` → API設計・データアクセスパターン
 - `docs/frontend-design.md` → フロントエンド設計・コンポーネント構成

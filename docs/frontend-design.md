@@ -1,4 +1,4 @@
-# TechPrep フロントエンド設計書
+# TechInterviewPrep フロントエンド設計書
 
 > Next.js App Router + TypeScript | 仕様書 v1.2 準拠 | 2026年3月
 

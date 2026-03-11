@@ -1,4 +1,4 @@
-# TechPrep — TypeScript 型定義書
+# TechInterviewPrep — TypeScript 型定義書
 
 > 仕様書 v1.2 / DB設計書 準拠 | 2026年3月
 

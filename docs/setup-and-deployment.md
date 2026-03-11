@@ -1,4 +1,4 @@
-# TechPrep — セットアップ & デプロイガイド
+# TechInterviewPrep — セットアップ & デプロイガイド
 
 > Next.js (App Router) + Supabase + Vercel | 2026年3月
 
@@ -38,7 +38,7 @@ brew install supabase/tap/supabase
 
 ```bash
 # ==============================================================
-# .env.local — TechPrep 環境変数テンプレート
+# .env.local — TechInterviewPrep 環境変数テンプレート
 # ==============================================================
 
 # --------------------------------------------------------------
@@ -89,7 +89,7 @@ ADMIN_EMAIL=admin@example.com
 1. [supabase.com](https://supabase.com) にアクセスし、アカウントを作成
 2. 「New Project」からプロジェクトを作成
    - **Organization**: 任意
-   - **Project name**: `techprep`（任意）
+   - **Project name**: `techinterviewprep`（任意）
    - **Database Password**: 安全なパスワードを設定（控えておく）
    - **Region**: `Northeast Asia (Tokyo)` 推奨
 3. プロジェクト作成完了後、以下をメモ:
@@ -140,7 +140,7 @@ Supabase ダッシュボードの **SQL Editor** を開き、DB設計書（`docs
 2. プロジェクトを作成（または既存プロジェクトを選択）
 3. **APIs & Services > OAuth consent screen** を開く
    - User Type: **External**
-   - アプリ名: `TechPrep`
+   - アプリ名: `TechInterviewPrep`
    - サポートメール: 自分のメールアドレス
    - 承認済みドメイン: `supabase.co`
    - 必要な情報を入力して保存
@@ -150,7 +150,7 @@ Supabase ダッシュボードの **SQL Editor** を開き、DB設計書（`docs
 1. **APIs & Services > Credentials** を開く
 2. **Create Credentials > OAuth client ID**
 3. Application type: **Web application**
-4. Name: `TechPrep`（任意）
+4. Name: `TechInterviewPrep`（任意）
 5. **Authorized redirect URIs** に以下を追加:
 
 ```

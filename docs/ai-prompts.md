@@ -1,4 +1,4 @@
-# TechPrep AIプロンプト設計書
+# TechInterviewPrep AIプロンプト設計書
 
 > `lib/prompts/` のテンプレート関数仕様 | 仕様書 v1.2 セクション7 準拠 | 2026年3月
 

@@ -1,4 +1,4 @@
-# TechPrep API設計書
+# TechInterviewPrep API設計書
 
 > Next.js App Router + Supabase | 仕様書 v1.2 準拠 | 2026年3月
 
@@ -6,7 +6,7 @@
 
 ## 1. アーキテクチャ概要
 
-TechPrep のデータアクセスは、**Supabase クライアント直接アクセス**と **Next.js Route Handler** の2系統に分かれる。判定基準は以下のとおり。
+TechInterviewPrep のデータアクセスは、**Supabase クライアント直接アクセス**と **Next.js Route Handler** の2系統に分かれる。判定基準は以下のとおり。
 
 | 判定基準 | Supabase クライアント直接 | Next.js Route Handler |
 |---|---|---|
