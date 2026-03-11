@@ -1,13 +1,22 @@
 'use client';
 
 import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useLanguage } from '@/hooks/useLanguage';
 import { t } from '@/lib/i18n';
 import { createClient } from '@/lib/supabase/client';
 
 const LoginPage = () => {
   const { language } = useLanguage();
-  const [error, setError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const callbackError = searchParams.get('error') === 'auth_callback_failed';
+  const [error, setError] = useState<string | null>(
+    callbackError
+      ? language === 'ja'
+        ? '認証に失敗しました。もう一度お試しください。'
+        : 'Authentication failed. Please try again.'
+      : null
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const handleGoogleLogin = async () => {
@@ -18,7 +27,7 @@ const LoginPage = () => {
       const { error: authError } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: window.location.origin + '/dashboard',
+          redirectTo: window.location.origin + '/auth/callback',
         },
       });
       if (authError) {
