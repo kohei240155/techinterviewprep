@@ -1,0 +1,40 @@
+const translations = {
+  'home.title': { ja: 'トピック一覧', en: 'Topics' },
+  'quiz.start': { ja: 'クイズを始める', en: 'Start Quiz' },
+  'quiz.next': { ja: '次の問題へ', en: 'Next Question' },
+  'quiz.retry': { ja: 'もう一度', en: 'Try Again' },
+  'quiz.bookmark': { ja: 'ブックマーク', en: 'Bookmark' },
+  'quiz.idk': { ja: 'わからない', en: "I don't know" },
+  'quiz.results': { ja: 'セッション結果', en: 'Session Results' },
+  'quiz.accuracy': { ja: '正答率', en: 'Accuracy' },
+  'quiz.correct': { ja: '正解', en: 'Correct' },
+  'quiz.wrong': { ja: '不正解', en: 'Wrong' },
+  'quiz.skipped': { ja: 'スキップ', en: 'Skipped' },
+  'quiz.backToTopic': { ja: 'トピックに戻る', en: 'Back to Topic' },
+  'explain.start': { ja: '口頭説明を練習', en: 'Practice Explanation' },
+  'explain.submit': { ja: '回答を送信', en: 'Submit Answer' },
+  'explain.feedback': { ja: 'フィードバック', en: 'Feedback' },
+  'dashboard.title': { ja: '進捗ダッシュボード', en: 'Dashboard' },
+  'dashboard.review': { ja: '今日の復習', en: "Today's Review" },
+  'dashboard.streak': { ja: '連続学習日数', en: 'Streak' },
+  'dashboard.totalAnswered': { ja: '総回答数', en: 'Total Answered' },
+  'common.login': { ja: 'ログイン', en: 'Login' },
+  'common.logout': { ja: 'ログアウト', en: 'Logout' },
+  'common.loading': { ja: '読み込み中...', en: 'Loading...' },
+  'common.error': { ja: 'エラーが発生しました', en: 'An error occurred' },
+  'common.retry': { ja: 'もう一度試す', en: 'Try Again' },
+  'admin.title': { ja: '管理者', en: 'Admin' },
+  'admin.generate': { ja: '問題生成', en: 'Generate Questions' },
+  'admin.questions': { ja: '問題管理', en: 'Manage Questions' },
+  'mode.new': { ja: '新規', en: 'New' },
+  'mode.review': { ja: '復習', en: 'Review' },
+  'difficulty.easy': { ja: '易しい', en: 'Easy' },
+  'difficulty.medium': { ja: '普通', en: 'Medium' },
+  'difficulty.hard': { ja: '難しい', en: 'Hard' },
+} as const;
+
+type TranslationKey = keyof typeof translations;
+
+export function t(key: TranslationKey, language: 'ja' | 'en'): string {
+  return translations[key]?.[language] ?? key;
+}
