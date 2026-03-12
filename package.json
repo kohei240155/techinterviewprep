@@ -13,7 +13,7 @@
     "db:seed": "dotenv -e .env.local -- prisma db seed",
     "db:seed:prod": "dotenv -e .env.production -- prisma db seed",
     "db:import": "dotenv -e .env.local -- tsx scripts/import-questions.ts",
-    "db:import:prod": "dotenv -e .env.production -- tsx scripts/import-questions.ts"
+    "db:import:prod": "dotenv -e .env.production -- tsx scripts/import-questions.ts --prod"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

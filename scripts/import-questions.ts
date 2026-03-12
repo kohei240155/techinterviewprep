@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { z } from 'zod';
 
 // --- Validation schemas (aligned with lib/prompts/schemas.ts) ---
@@ -15,8 +15,18 @@ const RubricSchema = z.object({
   rubric_en: z.record(z.enum(['1', '2', '3', '4']), z.string()),
 });
 
+const ChoiceQuestionBaseFields = {
+  difficulty: z.enum(['easy', 'medium', 'hard']),
+  question_ja: z.string().min(1),
+  question_en: z.string().min(1),
+  options: z.array(ChoiceOptionSchema).length(4),
+  answer: z.object({ correct_index: z.number().int().min(0).max(3) }),
+  explanation_ja: z.string().min(1),
+  explanation_en: z.string().min(1),
+};
+
 const MultipleQuestionSchema = z.object({
-  type: z.enum(['multiple', 'code']),
+  type: z.literal('multiple'),
   difficulty: z.enum(['easy', 'medium', 'hard']),
   question_ja: z.string().min(1),
   question_en: z.string().min(1),
@@ -51,19 +61,14 @@ const ExplainQuestionSchema = z.object({
   explanation_en: z.string(),
 });
 
+const CodeQuestionSchema = z.object({
+  type: z.literal('code'),
+  ...ChoiceQuestionBaseFields,
+});
+
 const GeneratedQuestionSchema = z.discriminatedUnion('type', [
   MultipleQuestionSchema,
-  // code uses same schema as multiple but with type: 'code'
-  z.object({
-    type: z.literal('code'),
-    difficulty: z.enum(['easy', 'medium', 'hard']),
-    question_ja: z.string().min(1),
-    question_en: z.string().min(1),
-    options: z.array(ChoiceOptionSchema).length(4),
-    answer: z.object({ correct_index: z.number().int().min(0).max(3) }),
-    explanation_ja: z.string().min(1),
-    explanation_en: z.string().min(1),
-  }),
+  CodeQuestionSchema,
   TrueFalseQuestionSchema,
   ExplainQuestionSchema,
 ]);
@@ -71,6 +76,9 @@ const GeneratedQuestionSchema = z.discriminatedUnion('type', [
 const ImportFileSchema = z.object({
   topic_id: z.string().uuid(),
   topic_name: z.string().min(1),
+  created_at: z.string().optional(),
+  imported_dev: z.boolean().optional().default(false),
+  imported_prod: z.boolean().optional().default(false),
   questions: z.array(GeneratedQuestionSchema).min(1),
 });
 
@@ -78,6 +86,7 @@ const ImportFileSchema = z.object({
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
+const isProd = args.includes('--prod');
 const filePath = args.find((a) => !a.startsWith('--'));
 
 if (!filePath) {
@@ -171,6 +180,13 @@ const main = async () => {
   for (const row of inserted) {
     console.log(`  - ${row.id}`);
   }
+
+  // Update imported flag in the JSON file
+  const flagKey = isProd ? 'imported_prod' : 'imported_dev';
+  const original = JSON.parse(readFileSync(filePath, 'utf-8'));
+  original[flagKey] = true;
+  writeFileSync(filePath, JSON.stringify(original, null, 2) + '\n', 'utf-8');
+  console.log(`\nUpdated ${filePath}: ${flagKey} = true`);
 };
 
 main();

@@ -1,0 +1,403 @@
+{
+  "topic_id": "b1b2c3d4-0001-4000-8000-000000000001",
+  "topic_name": "Closures, Scope & this",
+  "created_at": "2026-03-11",
+  "imported_dev": true,
+  "imported_prod": false,
+  "questions": [
+    {
+      "type": "multiple",
+      "difficulty": "easy",
+      "question_ja": "JavaScriptにおけるクロージャとは何ですか？",
+      "question_en": "What is a closure in JavaScript?",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "関数が定義されたスコープの変数にアクセスできる仕組み",
+          "text_en": "A mechanism that allows a function to access variables from the scope in which it was defined"
+        },
+        {
+          "label": "B",
+          "text_ja": "関数が呼び出されたスコープの変数にアクセスできる仕組み",
+          "text_en": "A mechanism that allows a function to access variables from the scope in which it was called"
+        },
+        {
+          "label": "C",
+          "text_ja": "グローバル変数を関数内で使用するための仕組み",
+          "text_en": "A mechanism for using global variables inside functions"
+        },
+        {
+          "label": "D",
+          "text_ja": "関数をオブジェクトとして扱うための仕組み",
+          "text_en": "A mechanism for treating functions as objects"
+        }
+      ],
+      "answer": {
+        "correct_index": 0
+      },
+      "explanation_ja": "クロージャとは、関数がその「レキシカルスコープ（定義時のスコープ）」の変数への参照を保持し続ける仕組みです。関数が定義された場所の環境を記憶するため、外側の関数が実行を終えた後でも、その変数にアクセスできます。呼び出し時のスコープ（動的スコープ）ではなく、定義時のスコープ（静的スコープ）が使われる点が重要です。",
+      "explanation_en": "A closure is a mechanism where a function retains a reference to variables in its lexical scope (the scope where it was defined). Because the function remembers the environment in which it was created, it can access those variables even after the outer function has finished executing. The key point is that JavaScript uses the scope at definition time (static/lexical scope), not the scope at call time (dynamic scope)."
+    },
+    {
+      "type": "multiple",
+      "difficulty": "easy",
+      "question_ja": "`let`、`const`、`var` のスコープに関する説明として正しいものはどれですか？",
+      "question_en": "Which of the following correctly describes the scoping behavior of `let`, `const`, and `var`?",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "`var` はブロックスコープ、`let` と `const` は関数スコープを持つ",
+          "text_en": "`var` is block-scoped, while `let` and `const` are function-scoped"
+        },
+        {
+          "label": "B",
+          "text_ja": "`let` と `const` はブロックスコープ、`var` は関数スコープを持つ",
+          "text_en": "`let` and `const` are block-scoped, while `var` is function-scoped"
+        },
+        {
+          "label": "C",
+          "text_ja": "3つすべてがブロックスコープを持つ",
+          "text_en": "All three are block-scoped"
+        },
+        {
+          "label": "D",
+          "text_ja": "3つすべてが関数スコープを持つ",
+          "text_en": "All three are function-scoped"
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "`var` は関数スコープを持ち、関数内のどこで宣言してもその関数全体で有効です。一方、`let` と `const` はブロックスコープ（`{}`で囲まれた範囲）を持ち、宣言されたブロック内でのみ有効です。これが `for` ループでの変数キャプチャの挙動の違いにも影響します。",
+      "explanation_en": "`var` is function-scoped, meaning it is accessible throughout the entire function regardless of where it is declared. In contrast, `let` and `const` are block-scoped, meaning they are only accessible within the block (`{}`) in which they are declared. This difference also affects variable capture behavior in `for` loops."
+    },
+    {
+      "type": "multiple",
+      "difficulty": "medium",
+      "question_ja": "アロー関数の `this` バインディングについて正しい説明はどれですか？",
+      "question_en": "Which statement correctly describes the `this` binding of arrow functions?",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "アロー関数は独自の `this` を持ち、呼び出し方によって決まる",
+          "text_en": "Arrow functions have their own `this`, determined by how they are called"
+        },
+        {
+          "label": "B",
+          "text_ja": "アロー関数は `this` を持たず、囲んでいるレキシカルスコープの `this` を継承する",
+          "text_en": "Arrow functions do not have their own `this` and inherit `this` from the enclosing lexical scope"
+        },
+        {
+          "label": "C",
+          "text_ja": "アロー関数の `this` は常に `undefined` である",
+          "text_en": "The `this` of arrow functions is always `undefined`"
+        },
+        {
+          "label": "D",
+          "text_ja": "アロー関数の `this` は常にグローバルオブジェクトを参照する",
+          "text_en": "The `this` of arrow functions always refers to the global object"
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "アロー関数は独自の `this` バインディングを持ちません。代わりに、定義された場所を囲むレキシカルスコープの `this` を継承（キャプチャ）します。これは `bind()`, `call()`, `apply()` で上書きすることもできません。この特性により、コールバック関数で外側の `this` を使いたい場合に便利です。",
+      "explanation_en": "Arrow functions do not have their own `this` binding. Instead, they inherit (capture) the `this` value from the enclosing lexical scope where they are defined. This cannot be overridden by `bind()`, `call()`, or `apply()`. This property makes arrow functions convenient when you want to use the outer `this` in callback functions."
+    },
+    {
+      "type": "multiple",
+      "difficulty": "medium",
+      "question_ja": "`bind()`, `call()`, `apply()` の違いについて正しい説明はどれですか？",
+      "question_en": "Which statement correctly describes the differences between `bind()`, `call()`, and `apply()`?",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "`bind()` は関数を即座に実行し、`call()` は新しい関数を返す",
+          "text_en": "`bind()` immediately invokes the function, while `call()` returns a new function"
+        },
+        {
+          "label": "B",
+          "text_ja": "`call()` は引数を配列で渡し、`apply()` は引数を個別に渡す",
+          "text_en": "`call()` passes arguments as an array, while `apply()` passes arguments individually"
+        },
+        {
+          "label": "C",
+          "text_ja": "`bind()` は新しい関数を返し、`call()` は引数を個別に渡して即実行、`apply()` は引数を配列で渡して即実行する",
+          "text_en": "`bind()` returns a new function, `call()` immediately invokes with individual arguments, and `apply()` immediately invokes with an array of arguments"
+        },
+        {
+          "label": "D",
+          "text_ja": "3つとも同じ動作をするが、構文が異なるだけである",
+          "text_en": "All three behave identically, differing only in syntax"
+        }
+      ],
+      "answer": {
+        "correct_index": 2
+      },
+      "explanation_ja": "`bind()` は `this` を束縛した新しい関数を返します（即実行しない）。`call()` は第2引数以降に個別の引数を渡して即実行します。`apply()` は第2引数に引数の配列を渡して即実行します。覚え方: `apply` の \"a\" は \"array\"、`call` の \"c\" は \"comma-separated\"。",
+      "explanation_en": "`bind()` returns a new function with `this` bound (does not execute immediately). `call()` immediately invokes the function with arguments passed individually after the first argument. `apply()` immediately invokes the function with arguments passed as an array. Mnemonic: 'a' in `apply` for 'array', 'c' in `call` for 'comma-separated'."
+    },
+    {
+      "type": "multiple",
+      "difficulty": "medium",
+      "question_ja": "Temporal Dead Zone (TDZ) とは何ですか？",
+      "question_en": "What is the Temporal Dead Zone (TDZ)?",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "`var` 変数が宣言前に `undefined` となる期間",
+          "text_en": "The period when a `var` variable is `undefined` before its declaration"
+        },
+        {
+          "label": "B",
+          "text_ja": "`let` / `const` 変数がスコープの開始から宣言に到達するまでアクセスできない期間",
+          "text_en": "The period from the start of the scope until the `let` / `const` declaration is reached, during which the variable cannot be accessed"
+        },
+        {
+          "label": "C",
+          "text_ja": "ガベージコレクション中に変数がアクセスできない期間",
+          "text_en": "The period during garbage collection when variables are inaccessible"
+        },
+        {
+          "label": "D",
+          "text_ja": "非同期関数の実行が中断されている期間",
+          "text_en": "The period when execution of an async function is suspended"
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "TDZ（Temporal Dead Zone）は、`let` や `const` で宣言された変数が、スコープの開始地点から実際の宣言文に到達するまでの間にアクセスできない期間です。この期間に変数を参照すると `ReferenceError` が発生します。`var` はホイスティングにより `undefined` で初期化されるため TDZ はありません。",
+      "explanation_en": "The TDZ (Temporal Dead Zone) is the period in which `let` and `const` variables cannot be accessed, spanning from the start of the scope to the point where the declaration is encountered. Accessing a variable during the TDZ throws a `ReferenceError`. `var` does not have a TDZ because it is initialized to `undefined` through hoisting."
+    },
+    {
+      "type": "multiple",
+      "difficulty": "hard",
+      "question_ja": "以下のうち、`this` の値が呼び出し方によって決定される正しい優先順位（高→低）はどれですか？",
+      "question_en": "Which of the following shows the correct precedence order (highest to lowest) for how `this` is determined?",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "デフォルトバインディング → 暗黙的バインディング → 明示的バインディング → `new` バインディング",
+          "text_en": "Default binding → Implicit binding → Explicit binding → `new` binding"
+        },
+        {
+          "label": "B",
+          "text_ja": "`new` バインディング → 明示的バインディング → 暗黙的バインディング → デフォルトバインディング",
+          "text_en": "`new` binding → Explicit binding → Implicit binding → Default binding"
+        },
+        {
+          "label": "C",
+          "text_ja": "明示的バインディング → `new` バインディング → 暗黙的バインディング → デフォルトバインディング",
+          "text_en": "Explicit binding → `new` binding → Implicit binding → Default binding"
+        },
+        {
+          "label": "D",
+          "text_ja": "暗黙的バインディング → デフォルトバインディング → `new` バインディング → 明示的バインディング",
+          "text_en": "Implicit binding → Default binding → `new` binding → Explicit binding"
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "`this` バインディングの優先順位は: (1) `new` バインディング（コンストラクタ呼び出し）→ (2) 明示的バインディング（`call`/`apply`/`bind`）→ (3) 暗黙的バインディング（オブジェクトのメソッドとして呼び出し）→ (4) デフォルトバインディング（単独の関数呼び出し、strict modeでは `undefined`、非strictでは `globalThis`）。この優先順位は「You Don't Know JS」シリーズで詳しく解説されています。",
+      "explanation_en": "The precedence order for `this` binding is: (1) `new` binding (constructor call) → (2) Explicit binding (`call`/`apply`/`bind`) → (3) Implicit binding (called as a method of an object) → (4) Default binding (standalone function call, `undefined` in strict mode, `globalThis` in non-strict). This precedence is thoroughly explained in the 'You Don't Know JS' book series."
+    },
+    {
+      "type": "code",
+      "difficulty": "easy",
+      "question_ja": "以下のコードの出力は何ですか？\n\n```javascript\nfunction outer() {\n  let count = 0;\n  return function inner() {\n    count++;\n    return count;\n  };\n}\n\nconst counter = outer();\nconsole.log(counter());\nconsole.log(counter());\nconsole.log(counter());\n```",
+      "question_en": "What is the output of the following code?\n\n```javascript\nfunction outer() {\n  let count = 0;\n  return function inner() {\n    count++;\n    return count;\n  };\n}\n\nconst counter = outer();\nconsole.log(counter());\nconsole.log(counter());\nconsole.log(counter());\n```",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "1, 1, 1",
+          "text_en": "1, 1, 1"
+        },
+        {
+          "label": "B",
+          "text_ja": "1, 2, 3",
+          "text_en": "1, 2, 3"
+        },
+        {
+          "label": "C",
+          "text_ja": "0, 1, 2",
+          "text_en": "0, 1, 2"
+        },
+        {
+          "label": "D",
+          "text_ja": "undefined, undefined, undefined",
+          "text_en": "undefined, undefined, undefined"
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "`inner` 関数は `outer` のスコープにある `count` 変数をクロージャでキャプチャしています。`outer()` が実行されると `count` は `0` で初期化され、`inner` 関数が返されます。`counter()` を呼ぶたびに同じ `count` 変数がインクリメントされるため、1, 2, 3 と出力されます。各呼び出しが独立した変数を持つのではなく、同じクロージャを共有している点がポイントです。",
+      "explanation_en": "The `inner` function captures the `count` variable from `outer`'s scope via closure. When `outer()` executes, `count` is initialized to `0` and the `inner` function is returned. Each call to `counter()` increments the same `count` variable, so the output is 1, 2, 3. The key point is that each call shares the same closure rather than having its own independent variable."
+    },
+    {
+      "type": "code",
+      "difficulty": "medium",
+      "question_ja": "以下のコードの出力は何ですか？\n\n```javascript\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 0);\n}\n```",
+      "question_en": "What is the output of the following code?\n\n```javascript\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 0);\n}\n```",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "0, 1, 2",
+          "text_en": "0, 1, 2"
+        },
+        {
+          "label": "B",
+          "text_ja": "3, 3, 3",
+          "text_en": "3, 3, 3"
+        },
+        {
+          "label": "C",
+          "text_ja": "undefined, undefined, undefined",
+          "text_en": "undefined, undefined, undefined"
+        },
+        {
+          "label": "D",
+          "text_ja": "0, 0, 0",
+          "text_en": "0, 0, 0"
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "`var` は関数スコープのため、ループ内のすべての `setTimeout` コールバックが同じ `i` 変数を参照します。ループ終了後 `i` は `3` になっているため、すべてのコールバックが `3` を出力します。`let` を使えば各イテレーションごとに新しいブロックスコープが作られ、`0, 1, 2` が出力されます。これはクロージャとスコープの理解を問う定番の面接問題です。",
+      "explanation_en": "Because `var` is function-scoped, all `setTimeout` callbacks reference the same `i` variable. After the loop finishes, `i` is `3`, so all callbacks print `3`. Using `let` instead would create a new block scope for each iteration, resulting in `0, 1, 2`. This is a classic interview question testing understanding of closures and scope."
+    },
+    {
+      "type": "code",
+      "difficulty": "medium",
+      "question_ja": "以下のコードの出力は何ですか？\n\n```javascript\nconst obj = {\n  name: 'Alice',\n  greet: function() {\n    return () => {\n      return this.name;\n    };\n  }\n};\n\nconst greetFn = obj.greet();\nconst detached = obj.greet;\nconst detachedGreet = detached();\n\nconsole.log(greetFn());\nconsole.log(detachedGreet());\n```",
+      "question_en": "What is the output of the following code?\n\n```javascript\nconst obj = {\n  name: 'Alice',\n  greet: function() {\n    return () => {\n      return this.name;\n    };\n  }\n};\n\nconst greetFn = obj.greet();\nconst detached = obj.greet;\nconst detachedGreet = detached();\n\nconsole.log(greetFn());\nconsole.log(detachedGreet());\n```",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "\"Alice\", \"Alice\"",
+          "text_en": "\"Alice\", \"Alice\""
+        },
+        {
+          "label": "B",
+          "text_ja": "\"Alice\", undefined",
+          "text_en": "\"Alice\", undefined"
+        },
+        {
+          "label": "C",
+          "text_ja": "undefined, undefined",
+          "text_en": "undefined, undefined"
+        },
+        {
+          "label": "D",
+          "text_ja": "undefined, \"Alice\"",
+          "text_en": "undefined, \"Alice\""
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "`obj.greet()` を呼ぶと `this` は `obj` に暗黙的にバインドされます。返されるアロー関数はこの `this`（= `obj`）をレキシカルにキャプチャするため、`greetFn()` は `\"Alice\"` を返します。一方、`detached = obj.greet` でメソッドを変数に代入すると、`detached()` は単独の関数呼び出しとなり `this` はグローバル（strict modeでは `undefined`）になります。アロー関数はこの `this` をキャプチャするため、`detachedGreet()` は `undefined` を返します。",
+      "explanation_en": "When `obj.greet()` is called, `this` is implicitly bound to `obj`. The returned arrow function lexically captures this `this` (= `obj`), so `greetFn()` returns `\"Alice\"`. However, assigning `obj.greet` to a variable means `detached()` is a standalone function call where `this` is the global object (or `undefined` in strict mode). The arrow function captures this `this`, so `detachedGreet()` returns `undefined`."
+    },
+    {
+      "type": "code",
+      "difficulty": "hard",
+      "question_ja": "以下のコードの出力は何ですか？\n\n```javascript\nfunction createFunctions() {\n  let result = [];\n  for (let i = 0; i < 3; i++) {\n    result.push(function() {\n      let j = i;\n      return function() {\n        return j++;\n      };\n    });\n  }\n  return result;\n}\n\nconst fns = createFunctions();\nconst a = fns[0]();\nconst b = fns[0]();\nconsole.log(a()); // ?\nconsole.log(a()); // ?\nconsole.log(b()); // ?\n```",
+      "question_en": "What is the output of the following code?\n\n```javascript\nfunction createFunctions() {\n  let result = [];\n  for (let i = 0; i < 3; i++) {\n    result.push(function() {\n      let j = i;\n      return function() {\n        return j++;\n      };\n    });\n  }\n  return result;\n}\n\nconst fns = createFunctions();\nconst a = fns[0]();\nconst b = fns[0]();\nconsole.log(a()); // ?\nconsole.log(a()); // ?\nconsole.log(b()); // ?\n```",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "0, 1, 0",
+          "text_en": "0, 1, 0"
+        },
+        {
+          "label": "B",
+          "text_ja": "0, 0, 0",
+          "text_en": "0, 0, 0"
+        },
+        {
+          "label": "C",
+          "text_ja": "0, 1, 2",
+          "text_en": "0, 1, 2"
+        },
+        {
+          "label": "D",
+          "text_ja": "0, 1, 1",
+          "text_en": "0, 1, 1"
+        }
+      ],
+      "answer": {
+        "correct_index": 0
+      },
+      "explanation_ja": "`let` を使っているため、各ループイテレーションで `i` は独立したスコープを持ちます。`fns[0]` は `i=0` をキャプチャした関数です。`fns[0]()` を呼ぶたびに新しい `j`（`i` の値で初期化）と新しい内部クロージャが作られます。`a = fns[0]()` で `j=0` の独自クロージャが作られ、`a()` は `j++` で `0` を返し `j` を `1` に。2回目の `a()` は `1` を返し `j` を `2` に。`b = fns[0]()` は別の呼び出しなので新しい `j=0` が作られ、`b()` は `0` を返します。",
+      "explanation_en": "Since `let` is used, each loop iteration has its own scope for `i`. `fns[0]` is a function that captured `i=0`. Each call to `fns[0]()` creates a new `j` (initialized with the value of `i`) and a new inner closure. `a = fns[0]()` creates a closure with its own `j=0`, so `a()` returns `0` (post-increment makes `j` become `1`). The second `a()` returns `1` (and `j` becomes `2`). `b = fns[0]()` is a separate invocation creating a new `j=0`, so `b()` returns `0`."
+    },
+    {
+      "type": "truefalse",
+      "difficulty": "medium",
+      "question_ja": "アロー関数に対して `.bind()` を使うと、`this` の値を変更できる。",
+      "question_en": "Using `.bind()` on an arrow function can change its `this` value.",
+      "options": null,
+      "answer": {
+        "correct_value": false
+      },
+      "explanation_ja": "アロー関数の `this` はレキシカルに決定され、`bind()`, `call()`, `apply()` で変更することはできません。これらのメソッドを呼び出しても、`this` は定義時のスコープの `this` のままです。通常の関数（`function` キーワード）のみが `this` の再バインドに対応しています。",
+      "explanation_en": "An arrow function's `this` is determined lexically and cannot be changed by `bind()`, `call()`, or `apply()`. Even if these methods are called, `this` remains the value from the scope where the arrow function was defined. Only regular functions (declared with the `function` keyword) support rebinding `this`."
+    },
+    {
+      "type": "explain",
+      "difficulty": "medium",
+      "question_ja": "クロージャとは何か、そしてクロージャの実用的なユースケースを2つ以上挙げて説明してください。",
+      "question_en": "Explain what a closure is and describe at least two practical use cases for closures.",
+      "options": {
+        "rubric_ja": {
+          "1": "クロージャの定義が不正確、またはユースケースを挙げられない",
+          "2": "クロージャの基本概念は理解しているが、レキシカルスコープとの関連が曖昧。ユースケースを1つしか挙げられない",
+          "3": "クロージャをレキシカルスコープとの関連で正確に説明でき、ユースケースを2つ以上挙げて具体的にコード例をイメージできる",
+          "4": "加えて、メモリへの影響（参照の保持によるGCへの影響）、モジュールパターンやカリー化など高度なパターンも言及できる"
+        },
+        "rubric_en": {
+          "1": "Inaccurate definition of closure, or unable to provide any use cases",
+          "2": "Understands the basic concept but is vague about the relationship with lexical scope. Can only name one use case",
+          "3": "Accurately explains closures in relation to lexical scope and can name at least two use cases with concrete code examples in mind",
+          "4": "Additionally mentions memory implications (GC impact due to retained references), and advanced patterns like the module pattern or currying"
+        }
+      },
+      "answer": {
+        "model_answer_ja": "クロージャとは、関数がそのレキシカルスコープ（定義された場所の変数環境）への参照を保持し続ける仕組みです。外側の関数が実行を終えても、内側の関数は外側の変数にアクセスできます。\n\n実用的なユースケース:\n1. **データのカプセル化 / プライベート変数**: 関数内で変数を定義し、操作用の関数だけを公開することで、外部から直接アクセスできないプライベートな状態を作れます（モジュールパターン）。\n2. **関数ファクトリ / カリー化**: 引数の一部を固定した関数を生成できます。例: `multiply(2)` が `x => 2 * x` を返す。\n3. **イベントハンドラやコールバック**: 特定の状態を保持したコールバック関数を作成できます。\n\n注意点として、クロージャは外側のスコープの変数への参照を保持するため、不要になった場合でもガベージコレクションされない可能性があり、メモリリークの原因になることがあります。",
+        "model_answer_en": "A closure is a mechanism where a function retains a reference to the variable environment of its lexical scope (where it was defined). Even after the outer function has finished executing, the inner function can still access the outer variables.\n\nPractical use cases:\n1. **Data encapsulation / private variables**: By defining variables inside a function and exposing only manipulation functions, you can create private state that cannot be directly accessed from outside (module pattern).\n2. **Function factories / currying**: You can generate functions with some arguments pre-set. Example: `multiply(2)` returns `x => 2 * x`.\n3. **Event handlers and callbacks**: You can create callback functions that maintain specific state.\n\nAn important consideration is that closures retain references to outer scope variables, which means those variables may not be garbage collected even when no longer needed, potentially causing memory leaks."
+      },
+      "explanation_ja": "クロージャはJavaScriptの最も重要な概念の一つで、面接では定義・ユースケース・注意点をセットで説明できることが求められます。",
+      "explanation_en": "Closures are one of the most important concepts in JavaScript. In interviews, you are expected to explain the definition, use cases, and caveats together."
+    },
+    {
+      "type": "explain",
+      "difficulty": "hard",
+      "question_ja": "JavaScriptの `this` キーワードの挙動を、4つのバインディングルール（デフォルト、暗黙的、明示的、new）とアロー関数の場合を含めて説明してください。",
+      "question_en": "Explain the behavior of the `this` keyword in JavaScript, covering the four binding rules (default, implicit, explicit, new) and how arrow functions handle `this`.",
+      "options": {
+        "rubric_ja": {
+          "1": "`this` の動的な性質を理解していない、またはバインディングルールを1つしか説明できない",
+          "2": "2-3つのバインディングルールを説明できるが、優先順位やアロー関数の挙動が曖昧",
+          "3": "4つのバインディングルールすべてを正確に説明し、それぞれの優先順位とアロー関数のレキシカル `this` も説明できる",
+          "4": "加えて、strict mode での違い、よくある `this` の落とし穴（メソッドの分離、コールバックでの喪失）、React クラスコンポーネントでの問題など実践的な知識も示せる"
+        },
+        "rubric_en": {
+          "1": "Does not understand the dynamic nature of `this`, or can only explain one binding rule",
+          "2": "Can explain 2-3 binding rules but is vague about precedence or arrow function behavior",
+          "3": "Accurately explains all four binding rules with their precedence order and arrow function's lexical `this`",
+          "4": "Additionally demonstrates practical knowledge such as strict mode differences, common `this` pitfalls (method extraction, loss in callbacks), and issues in React class components"
+        }
+      },
+      "answer": {
+        "model_answer_ja": "JavaScriptの `this` は関数の呼び出し方によって動的に決まります。4つのバインディングルール（優先順位順）:\n\n1. **`new` バインディング**: `new` で関数を呼ぶと、新しく作成されたオブジェクトが `this` になります。\n2. **明示的バインディング**: `call()`, `apply()`, `bind()` で `this` を明示的に指定します。`bind()` は新しい関数を返し、`call`/`apply` は即実行します。\n3. **暗黙的バインディング**: `obj.method()` のようにオブジェクトのメソッドとして呼ぶと、そのオブジェクトが `this` になります。ただし、`const fn = obj.method; fn()` のようにメソッドを取り出すと、暗黙的バインディングは失われます。\n4. **デフォルトバインディング**: 上記のいずれにも該当しない場合、非strict modeではグローバルオブジェクト、strict modeでは `undefined` になります。\n\n**アロー関数**: 独自の `this` を持たず、定義された場所のレキシカルスコープの `this` を継承します。`bind`/`call`/`apply` で上書きできません。\n\nよくある落とし穴: イベントハンドラにメソッドを渡す際の `this` の喪失、`setTimeout` コールバックでの `this` の変化など。",
+        "model_answer_en": "JavaScript's `this` is dynamically determined by how a function is called. The four binding rules (in order of precedence):\n\n1. **`new` binding**: When a function is called with `new`, `this` refers to the newly created object.\n2. **Explicit binding**: `call()`, `apply()`, and `bind()` explicitly set `this`. `bind()` returns a new function, while `call`/`apply` invoke immediately.\n3. **Implicit binding**: When called as a method of an object (`obj.method()`), the object becomes `this`. However, extracting the method (`const fn = obj.method; fn()`) loses the implicit binding.\n4. **Default binding**: When none of the above apply, `this` is the global object in non-strict mode, or `undefined` in strict mode.\n\n**Arrow functions**: Do not have their own `this`; they inherit `this` from the lexical scope where they are defined. This cannot be overridden by `bind`/`call`/`apply`.\n\nCommon pitfalls: Loss of `this` when passing methods as event handlers, `this` changing in `setTimeout` callbacks, etc."
+      },
+      "explanation_ja": "`this` はJavaScript面接で最頻出のトピックの一つです。4つのルールの優先順位を正確に把握し、実際のコードでどう影響するかを具体例とともに説明できることが重要です。",
+      "explanation_en": "`this` is one of the most frequently asked topics in JavaScript interviews. It is crucial to accurately understand the precedence of the four rules and explain with concrete examples how they affect real code."
+    }
+  ]
+}
