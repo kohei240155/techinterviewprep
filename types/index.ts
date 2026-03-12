@@ -14,7 +14,7 @@ export type QuizQuestionType = 'multiple' | 'code' | 'truefalse';
 export type Difficulty = 'easy' | 'medium' | 'hard';
 export type QuizMode = 'new' | 'review';
 export type QuestionCount = 5 | 10 | 15 | 20 | 'all';
-export type ProgressResult = 'correct' | 'wrong' | 'skipped';
+export type ProgressResult = 'correct' | 'wrong';
 export type FSRSRating = 1 | 2 | 3 | 4;
 export type FSRSState = 0 | 1 | 2 | 3;
 
@@ -393,7 +393,6 @@ export interface SessionResult {
   total_questions: number;
   correct_count: number;
   wrong_count: number;
-  skipped_count: number;
   accuracy_percent: number;
   total_time_ms: number;
   per_question: PerQuestionResult[];

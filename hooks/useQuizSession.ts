@@ -16,7 +16,7 @@ interface QuizState {
 
 type QuizAction =
   | { type: 'START_SESSION'; payload: { mode: QuizMode; questions: Question[] } }
-  | { type: 'ANSWER'; payload: { selected_index: number | null; result: 'correct' | 'wrong' | 'skipped'; time_spent_ms: number } }
+  | { type: 'ANSWER'; payload: { selected_index: number | null; result: 'correct' | 'wrong'; time_spent_ms: number } }
   | { type: 'NEXT_QUESTION' }
   | { type: 'FINISH_SESSION' }
   | { type: 'RESET' };

@@ -24,8 +24,6 @@ const resultColorClass = (result: ProgressResult): string => {
       return 'text-success-600 dark:text-success-400';
     case 'wrong':
       return 'text-danger-600 dark:text-danger-400';
-    case 'skipped':
-      return 'text-gray-500 dark:text-gray-400';
   }
 };
 
@@ -35,8 +33,6 @@ const resultBorderClass = (result: ProgressResult): string => {
       return 'border-l-success-500';
     case 'wrong':
       return 'border-l-danger-500';
-    case 'skipped':
-      return 'border-l-gray-400';
   }
 };
 
@@ -58,7 +54,7 @@ const ResultsSummary = ({ result, topicId, onRetry, language }: ResultsSummaryPr
           </p>
         </div>
 
-        <div className="mt-6 grid grid-cols-3 gap-4 text-center">
+        <div className="mt-6 grid grid-cols-2 gap-4 text-center">
           <div>
             <p className="text-2xl font-semibold tracking-tight text-success-600 dark:text-success-400">
               {result.correct_count}
@@ -75,14 +71,6 @@ const ResultsSummary = ({ result, topicId, onRetry, language }: ResultsSummaryPr
               {t('quiz.wrong', language)}
             </p>
           </div>
-          <div>
-            <p className="text-2xl font-semibold tracking-tight text-gray-500 dark:text-gray-400">
-              {result.skipped_count}
-            </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              {t('quiz.skipped', language)}
-            </p>
-          </div>
         </div>
 
         <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
@@ -95,7 +83,7 @@ const ResultsSummary = ({ result, topicId, onRetry, language }: ResultsSummaryPr
         {result.per_question.map((pq, index) => {
           const questionText = language === 'ja' ? pq.question_ja : pq.question_en;
           const resultLabel = t(
-            pq.result === 'correct' ? 'quiz.correct' : pq.result === 'wrong' ? 'quiz.wrong' : 'quiz.skipped',
+            pq.result === 'correct' ? 'quiz.correct' : 'quiz.wrong',
             language
           );
 

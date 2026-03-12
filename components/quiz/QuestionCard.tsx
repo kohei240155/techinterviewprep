@@ -6,6 +6,7 @@ import { isOptionChoices, isMultipleAnswer, isTrueFalseAnswer } from '@/types';
 import { t } from '@/lib/i18n';
 import OptionButton from './OptionButton';
 import CodeBlock from './CodeBlock';
+import MarkdownText from '@/components/common/MarkdownText';
 
 interface QuestionCardProps {
   question: Question;
@@ -47,14 +48,8 @@ const QuestionCard = ({ question, language, phase, selectedIndex, onAnswer }: Qu
     }
   };
 
-  const handleTrueFalseSelect = (value: boolean | null): void => {
+  const handleTrueFalseSelect = (value: boolean): void => {
     if (isAnswered) return;
-
-    if (value === null) {
-      setLocalSelected(2);
-      onAnswer(null, 'skipped');
-      return;
-    }
 
     const index = value ? 0 : 1;
     setLocalSelected(index);
@@ -118,18 +113,6 @@ const QuestionCard = ({ question, language, phase, selectedIndex, onAnswer }: Qu
           disabled={isAnswered}
           onClick={() => handleTrueFalseSelect(false)}
         />
-        <button
-          type="button"
-          onClick={() => handleTrueFalseSelect(null)}
-          disabled={isAnswered}
-          className={`w-full rounded-xl border-2 border-dashed p-3 text-center text-sm transition-all duration-200 ${
-            effectiveSelected === 2
-              ? 'border-gray-400 bg-gray-100 dark:border-gray-500 dark:bg-gray-800'
-              : 'border-gray-300 text-gray-500 hover:border-gray-400 dark:border-gray-600 dark:text-gray-400'
-          } ${isAnswered ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-        >
-          {t('quiz.idk', language)}
-        </button>
       </div>
     );
   };
@@ -163,9 +146,9 @@ const QuestionCard = ({ question, language, phase, selectedIndex, onAnswer }: Qu
           <h4 className="mb-2 font-semibold text-primary-700 dark:text-primary-300">
             {language === 'ja' ? '解説' : 'Explanation'}
           </h4>
-          <p className="text-sm leading-relaxed text-primary-900 dark:text-primary-100">
+          <MarkdownText className="text-sm leading-relaxed text-primary-900 dark:text-primary-100">
             {explanationText}
-          </p>
+          </MarkdownText>
         </div>
       )}
     </div>

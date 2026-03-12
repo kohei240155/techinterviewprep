@@ -161,7 +161,6 @@ const QuizSession = ({ topicIds, initialMode, initialCount, difficulties, questi
 
     const correct = state.answers.filter((a) => a.result === 'correct').length;
     const wrong = state.answers.filter((a) => a.result === 'wrong').length;
-    const skipped = state.answers.filter((a) => a.result === 'skipped').length;
     const total = state.answers.length;
 
     return {
@@ -169,7 +168,6 @@ const QuizSession = ({ topicIds, initialMode, initialCount, difficulties, questi
       total_questions: total,
       correct_count: correct,
       wrong_count: wrong,
-      skipped_count: skipped,
       accuracy_percent: total > 0 ? Math.round((correct / total) * 100) : 0,
       total_time_ms: state.totalTime,
       per_question: state.answers.map((answer, i) => {
@@ -331,16 +329,12 @@ const QuizSession = ({ topicIds, initialMode, initialCount, difficulties, questi
           <span className={`font-medium ${
             currentAnswer.result === 'correct'
               ? 'text-success-600 dark:text-success-400'
-              : currentAnswer.result === 'wrong'
-              ? 'text-danger-600 dark:text-danger-400'
-              : 'text-gray-500'
+              : 'text-danger-600 dark:text-danger-400'
           }`}>
             {t(
               currentAnswer.result === 'correct'
                 ? 'quiz.correct'
-                : currentAnswer.result === 'wrong'
-                ? 'quiz.wrong'
-                : 'quiz.skipped',
+                : 'quiz.wrong',
               language
             )}
           </span>

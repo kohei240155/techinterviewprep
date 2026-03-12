@@ -198,7 +198,6 @@ const ExplainSession = ({ topicId, questionIds }: ExplainSessionProps) => {
       total_questions: state.questions.length,
       correct_count: correctCount,
       wrong_count: wrongCount,
-      skipped_count: 0,
       accuracy_percent: Math.round((correctCount / state.questions.length) * 100),
       total_time_ms: state.totalTime,
       per_question: perQuestion,
