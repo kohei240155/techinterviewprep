@@ -24,12 +24,6 @@ const topicStyleMap: Record<string, TopicStyle> = {
     bgClass: 'bg-purple-100 dark:bg-purple-900/30',
     textClass: 'text-purple-600 dark:text-purple-400',
   },
-  this: {
-    icon: 'fingerprint',
-    color: 'rose',
-    bgClass: 'bg-rose-100 dark:bg-rose-900/30',
-    textClass: 'text-rose-600 dark:text-rose-400',
-  },
   generics: {
     icon: 'shield',
     color: 'indigo',
@@ -101,6 +95,36 @@ const topicStyleMap: Record<string, TopicStyle> = {
     color: 'slate',
     bgClass: 'bg-slate-100 dark:bg-slate-900/30',
     textClass: 'text-slate-600 dark:text-slate-400',
+  },
+  module: {
+    icon: 'inventory_2',
+    color: 'teal',
+    bgClass: 'bg-teal-100 dark:bg-teal-900/30',
+    textClass: 'text-teal-600 dark:text-teal-400',
+  },
+  browser: {
+    icon: 'web',
+    color: 'orange',
+    bgClass: 'bg-orange-100 dark:bg-orange-900/30',
+    textClass: 'text-orange-600 dark:text-orange-400',
+  },
+  fetch: {
+    icon: 'cloud_sync',
+    color: 'lime',
+    bgClass: 'bg-lime-100 dark:bg-lime-900/30',
+    textClass: 'text-lime-600 dark:text-lime-400',
+  },
+  ssr: {
+    icon: 'dns',
+    color: 'fuchsia',
+    bgClass: 'bg-fuchsia-100 dark:bg-fuchsia-900/30',
+    textClass: 'text-fuchsia-600 dark:text-fuchsia-400',
+  },
+  'server-component': {
+    icon: 'dns',
+    color: 'fuchsia',
+    bgClass: 'bg-fuchsia-100 dark:bg-fuchsia-900/30',
+    textClass: 'text-fuchsia-600 dark:text-fuchsia-400',
   },
 };
 

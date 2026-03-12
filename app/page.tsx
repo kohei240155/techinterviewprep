@@ -277,29 +277,29 @@ const HomePage = () => {
                   onClick={() => setOptionsExpanded((v) => !v)}
                   className="flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
                 >
-                  <span className="material-symbols-outlined text-base">tune</span>
+                  <span className="material-symbols-outlined text-lg">filter_alt</span>
                   {t('home.options', language)}
                   <span className="material-symbols-outlined text-base">
                     {optionsExpanded ? 'expand_less' : 'expand_more'}
                   </span>
                 </button>
                 {optionsExpanded && (
-                  <div className="card mt-2 space-y-4 p-4">
+                  <div className="card mt-3 p-5 space-y-5">
                     {/* Difficulty */}
                     <div>
-                      <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                      <p className="mb-2.5 text-sm font-semibold text-primary-600 dark:text-primary-400">
                         {t('home.difficulty', language)}
-                      </label>
-                      <div className="flex flex-wrap gap-3">
+                      </p>
+                      <div className="flex flex-wrap gap-4">
                         {ALL_DIFFICULTIES.map((d) => (
-                          <label key={d} className="flex items-center gap-1.5 cursor-pointer">
+                          <label key={d} className="flex items-center gap-2 cursor-pointer">
                             <input
                               type="checkbox"
                               checked={selectedDifficulties.has(d)}
                               onChange={() => toggleDifficulty(d)}
-                              className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600"
+                              className="h-[1.125rem] w-[1.125rem] rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600"
                             />
-                            <span className="text-sm text-gray-700 dark:text-gray-300">
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                               {t(`difficulty.${d}`, language)}
                             </span>
                           </label>
@@ -308,19 +308,19 @@ const HomePage = () => {
                     </div>
                     {/* Question type */}
                     <div>
-                      <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                      <p className="mb-2.5 text-sm font-semibold text-primary-600 dark:text-primary-400">
                         {t('home.questionType', language)}
-                      </label>
-                      <div className="flex flex-wrap gap-3">
+                      </p>
+                      <div className="flex flex-wrap gap-4">
                         {ALL_TYPES.map((type) => (
-                          <label key={type} className="flex items-center gap-1.5 cursor-pointer">
+                          <label key={type} className="flex items-center gap-2 cursor-pointer">
                             <input
                               type="checkbox"
                               checked={selectedTypes.has(type)}
                               onChange={() => toggleType(type)}
-                              className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600"
+                              className="h-[1.125rem] w-[1.125rem] rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600"
                             />
-                            <span className="text-sm text-gray-700 dark:text-gray-300">
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                               {t(`type.${type}`, language)}
                             </span>
                           </label>
@@ -328,16 +328,16 @@ const HomePage = () => {
                       </div>
                     </div>
                     {/* Unanswered only */}
-                    <div>
-                      <label className={`flex items-center gap-1.5 ${user ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'}`}>
+                    <div className="pt-1">
+                      <label className={`flex items-center gap-2 ${user ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'}`}>
                         <input
                           type="checkbox"
                           checked={unansweredOnly}
                           onChange={(e) => setUnansweredOnly(e.target.checked)}
                           disabled={!user}
-                          className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600"
+                          className="h-[1.125rem] w-[1.125rem] rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600"
                         />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                           {t('home.unansweredOnly', language)}
                         </span>
                         {!user && (
@@ -427,92 +427,110 @@ const HomePage = () => {
         {/* Explain tab */}
         {activeTab === 'explain' && (
           <div className="mt-6 space-y-10">
-            {sortedCategories?.map((category) => {
-              const sortedTopics = category.topics
-                ?.filter((topic: Topic) => !topic.deleted_at)
-                .sort((a: Topic, b: Topic) => a.sort_order - b.sort_order);
+            {expandedTopicId !== null ? (
+              // Question list view
+              (() => {
+                const selectedTopic = sortedCategories
+                  ?.flatMap((c) => c.topics ?? [])
+                  .find((t) => t.id === expandedTopicId);
+                const style = selectedTopic ? getTopicStyle(selectedTopic.name_en) : null;
 
-              if (!sortedTopics || sortedTopics.length === 0) return null;
+                return (
+                  <div>
+                    {/* Back button */}
+                    <button
+                      type="button"
+                      onClick={() => setExpandedTopicId(null)}
+                      className="flex items-center gap-1.5 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors mb-5"
+                    >
+                      <span className="material-symbols-outlined text-lg">arrow_back</span>
+                      {language === 'ja' ? 'トピック一覧に戻る' : 'Back to topics'}
+                    </button>
 
-              return (
-                <section key={category.id}>
-                  {/* Category header */}
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex items-center gap-3">
-                      <span className="h-8 w-1.5 rounded-full bg-primary-600" />
-                      <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
-                        {language === 'ja' ? category.name_ja : category.name_en}
-                      </h2>
-                    </div>
-                    <span className="text-xs font-semibold uppercase tracking-wider text-primary-500 dark:text-primary-400">
-                      {sortedTopics.length} {language === 'ja' ? 'モジュール' : 'MODULES'}
-                    </span>
-                  </div>
-
-                  {/* Topic cards grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {sortedTopics.map((topic: Topic) => {
-                      const style = getTopicStyle(topic.name_en);
-                      const count = questionCounts?.explain[topic.id] ?? 0;
-                      const isExpanded = expandedTopicId === topic.id;
-
-                      return (
-                        <button
-                          key={topic.id}
-                          type="button"
-                          onClick={() => setExpandedTopicId(isExpanded ? null : topic.id)}
-                          className={`card-interactive flex flex-col items-start p-5 text-left transition-all ${
-                            isExpanded
-                              ? 'ring-2 ring-primary-500 dark:ring-primary-400'
-                              : ''
-                          }`}
-                        >
-                          {/* Top row: icon + count badge */}
-                          <div className="flex w-full items-start justify-between">
-                            <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${style.bgClass}`}>
-                              <span className={`material-symbols-outlined text-xl ${style.textClass}`}>
-                                {style.icon}
-                              </span>
-                            </div>
-                            {count > 0 && (
-                              <span className="badge text-xs">
-                                {t('home.questionCount', language).replace('{count}', String(count))}
-                              </span>
-                            )}
-                          </div>
-
-                          {/* Title */}
-                          <h3 className="mt-4 text-base font-bold text-gray-900 dark:text-gray-100 leading-snug">
-                            {language === 'ja' ? topic.name_ja : topic.name_en}
-                          </h3>
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {/* Expanded question list (below the grid, within the category) */}
-                  {sortedTopics.some((topic) => expandedTopicId === topic.id) && (
-                    <div className="mt-4 card p-4">
-                      <div className="mb-2 flex items-center justify-between">
-                        <h3 className="text-sm font-bold text-gray-800 dark:text-gray-200">
-                          {language === 'ja'
-                            ? (sortedTopics.find((t) => t.id === expandedTopicId)?.name_ja ?? '')
-                            : (sortedTopics.find((t) => t.id === expandedTopicId)?.name_en ?? '')}
-                        </h3>
-                        <button
-                          type="button"
-                          onClick={() => setExpandedTopicId(null)}
-                          className="flex h-7 w-7 items-center justify-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
-                        >
-                          <span className="material-symbols-outlined text-lg text-gray-500">close</span>
-                        </button>
+                    {/* Topic header */}
+                    {selectedTopic && style && (
+                      <div className="flex items-center gap-3 mb-5">
+                        <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${style.bgClass}`}>
+                          <span className={`material-symbols-outlined text-xl ${style.textClass}`}>
+                            {style.icon}
+                          </span>
+                        </div>
+                        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
+                          {language === 'ja' ? selectedTopic.name_ja : selectedTopic.name_en}
+                        </h2>
                       </div>
-                      <ExplainQuestionList topicId={expandedTopicId!} />
+                    )}
+
+                    {/* Question list */}
+                    <div className="card p-4">
+                      <ExplainQuestionList topicId={expandedTopicId} />
                     </div>
-                  )}
-                </section>
-              );
-            })}
+                  </div>
+                );
+              })()
+            ) : (
+              // Card grid view
+              sortedCategories?.map((category) => {
+                const sortedTopics = category.topics
+                  ?.filter((topic: Topic) => !topic.deleted_at)
+                  .sort((a: Topic, b: Topic) => a.sort_order - b.sort_order);
+
+                if (!sortedTopics || sortedTopics.length === 0) return null;
+
+                return (
+                  <section key={category.id}>
+                    {/* Category header */}
+                    <div className="flex items-center justify-between mb-5">
+                      <div className="flex items-center gap-3">
+                        <span className="h-8 w-1.5 rounded-full bg-primary-600" />
+                        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
+                          {language === 'ja' ? category.name_ja : category.name_en}
+                        </h2>
+                      </div>
+                      <span className="text-xs font-semibold uppercase tracking-wider text-primary-500 dark:text-primary-400">
+                        {sortedTopics.length} {language === 'ja' ? 'モジュール' : 'MODULES'}
+                      </span>
+                    </div>
+
+                    {/* Topic cards grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {sortedTopics.map((topic: Topic) => {
+                        const style = getTopicStyle(topic.name_en);
+                        const count = questionCounts?.explain[topic.id] ?? 0;
+
+                        return (
+                          <button
+                            key={topic.id}
+                            type="button"
+                            onClick={() => setExpandedTopicId(topic.id)}
+                            className="card-interactive flex flex-col items-start p-5 text-left transition-all"
+                          >
+                            {/* Top row: icon + count badge */}
+                            <div className="flex w-full items-start justify-between">
+                              <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${style.bgClass}`}>
+                                <span className={`material-symbols-outlined text-xl ${style.textClass}`}>
+                                  {style.icon}
+                                </span>
+                              </div>
+                              {count > 0 && (
+                                <span className="badge text-xs">
+                                  {t('home.questionCount', language).replace('{count}', String(count))}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Title */}
+                            <h3 className="mt-4 text-base font-bold text-gray-900 dark:text-gray-100 leading-snug">
+                              {language === 'ja' ? topic.name_ja : topic.name_en}
+                            </h3>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </section>
+                );
+              })
+            )}
           </div>
         )}
       </section>
