@@ -34,17 +34,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // /admin/generate, /admin/questions: 管理者メールでないなら /admin へリダイレクト
-  if (pathname.startsWith('/admin/') && pathname !== '/admin') {
-    const adminEmail = process.env.ADMIN_EMAIL;
-    if (!user || user.email !== adminEmail) {
-      return NextResponse.redirect(new URL('/admin', request.url));
-    }
-  }
-
   return response;
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/admin/:path*'],
+  matcher: ['/dashboard/:path*'],
 };

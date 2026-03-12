@@ -399,23 +399,6 @@ export interface SessionResult {
   per_question: PerQuestionResult[];
 }
 
-// --- Admin 問題生成ウィザード ---
-
-export type GenerateWizardStep = 'input' | 'plan_review' | 'generating' | 'preview' | 'saving' | 'done';
-
-export interface GenerateWizardState {
-  step: GenerateWizardStep;
-  input_mode: 'text' | 'topic';
-  topic_id: string;
-  content: string;
-  plan: AnalysisPlan | null;
-  edited_plan: AnalysisPlan | null;
-  generated_questions: GeneratedQuestion[];
-  selected_question_indices: number[];
-  is_loading: boolean;
-  error: string | null;
-}
-
 // --- ダッシュボード ---
 
 export interface TopicAccuracy {

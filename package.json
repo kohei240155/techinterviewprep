@@ -11,7 +11,9 @@
     "db:migrate": "dotenv -e .env.local -- prisma migrate deploy",
     "db:migrate:prod": "dotenv -e .env.production -- prisma migrate deploy",
     "db:seed": "dotenv -e .env.local -- prisma db seed",
-    "db:seed:prod": "dotenv -e .env.production -- prisma db seed"
+    "db:seed:prod": "dotenv -e .env.production -- prisma db seed",
+    "db:import": "dotenv -e .env.local -- tsx scripts/import-questions.ts",
+    "db:import:prod": "dotenv -e .env.production -- tsx scripts/import-questions.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

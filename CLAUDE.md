@@ -25,11 +25,23 @@ pnpm db:migrate       # DBマイグレーション実行（dev）
 pnpm db:migrate:prod  # DBマイグレーション実行（prod）
 pnpm db:seed          # シードデータ投入（dev）
 pnpm db:seed:prod     # シードデータ投入（prod）
+pnpm db:import        # 問題JSONファイルをDBに投入（dev）
+pnpm db:import:prod   # 問題JSONファイルをDBに投入（prod）
+```
+
+## 問題追加ワークフロー
+
+```
+/generate-questions トピック名: 補足説明
+  → questions/{topic-slug}.json に問題を生成
+  → レビュー・修正
+  → pnpm db:import questions/{topic-slug}.json でDB投入
+  → pnpm db:import --dry-run ... でバリデーションのみ実行可
 ```
 
 ## ディレクトリ構成規約（実装時）
 
-- `components/` → ドメイン別グループ (layout, quiz, explain, dashboard, admin, common)
+- `components/` → ドメイン別グループ (layout, quiz, explain, dashboard, common)
 - `hooks/` → カスタムフック, `hooks/queries/` → TanStack Query フック
 - `app/api/` → Route Handlers (`ai/`, `admin/`)
 - `types/index.ts` → 型定義一元管理
