@@ -17,9 +17,10 @@ import ResultsSummary from '@/components/explain/ResultsSummary';
 
 interface ExplainSessionProps {
   topicId: string;
+  questionIds?: string[];
 }
 
-const ExplainSession = ({ topicId }: ExplainSessionProps) => {
+const ExplainSession = ({ topicId, questionIds }: ExplainSessionProps) => {
   const { data: questions, isLoading, error } = useQuestions(topicId);
   const [state, dispatch] = useExplainSession();
   const { language } = useLanguage();
@@ -29,9 +30,9 @@ const ExplainSession = ({ topicId }: ExplainSessionProps) => {
   const questionStartRef = useRef<number>(Date.now());
   const [isFetching, setIsFetching] = useState(false);
 
-  const explainQuestions = (questions ?? []).filter(
-    (q): q is ExplainQuestion => q.type === 'explain'
-  );
+  const explainQuestions = (questions ?? [])
+    .filter((q): q is ExplainQuestion => q.type === 'explain')
+    .filter((q) => !questionIds || questionIds.includes(q.id));
 
   useEffect(() => {
     if (explainQuestions.length > 0 && state.phase === 'playing' && state.questions.length === 0) {

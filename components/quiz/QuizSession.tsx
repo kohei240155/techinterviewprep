@@ -4,13 +4,13 @@ import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import { useQuizSession } from '@/hooks/useQuizSession';
 import { useMultiTopicQuestions } from '@/hooks/queries/useMultiTopicQuestions';
 import { useReviewItems } from '@/hooks/queries/useReviewItems';
-import { useProgressUpsert } from '@/hooks/queries/useProgress';
+import { useProgress, useProgressUpsert } from '@/hooks/queries/useProgress';
 import { useFSRS } from '@/hooks/useFSRS';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
 import { t } from '@/lib/i18n';
 import { quizResultToRating } from '@/types';
-import type { Question, QuizMode, QuestionCount, ProgressResult, SessionResult } from '@/types';
+import type { Question, QuizMode, QuestionCount, ProgressResult, SessionResult, Difficulty, QuizQuestionType } from '@/types';
 import QuestionCard from './QuestionCard';
 import ResultsSummary from './ResultsSummary';
 
@@ -18,6 +18,9 @@ interface QuizSessionProps {
   topicIds: string[];
   initialMode?: QuizMode;
   initialCount?: QuestionCount;
+  difficulties?: Difficulty[];
+  questionTypes?: QuizQuestionType[];
+  unansweredOnly?: boolean;
   skipSetup?: boolean;
 }
 
@@ -32,12 +35,13 @@ const shuffleArray = <T,>(arr: T[]): T[] => {
   return shuffled;
 };
 
-const QuizSession = ({ topicIds, initialMode, initialCount, skipSetup }: QuizSessionProps) => {
+const QuizSession = ({ topicIds, initialMode, initialCount, difficulties, questionTypes, unansweredOnly, skipSetup }: QuizSessionProps) => {
   const [state, dispatch] = useQuizSession();
   const { language } = useLanguage();
   const { user } = useAuth();
   const { data: allQuestions, isLoading: questionsLoading, error: questionsError } = useMultiTopicQuestions(topicIds);
   const { data: reviewItems } = useReviewItems(user?.id);
+  const { data: progressData } = useProgress(unansweredOnly ? user?.id : undefined);
   const progressUpsert = useProgressUpsert();
   const { schedule } = useFSRS();
 
@@ -71,9 +75,18 @@ const QuizSession = ({ topicIds, initialMode, initialCount, skipSetup }: QuizSes
       pool = reviewQuestions;
     } else {
       if (!allQuestions) return;
-      pool = allQuestions.filter(
-        (q: Question) => q.type !== 'explain'
-      );
+      const diffSet = difficulties ? new Set(difficulties) : null;
+      const typeSet = questionTypes ? new Set(questionTypes) : null;
+      const answeredIds = unansweredOnly && progressData
+        ? new Set(progressData.map((p) => p.question_id))
+        : null;
+      pool = allQuestions.filter((q: Question) => {
+        if (q.type === 'explain') return false;
+        if (diffSet && !diffSet.has(q.difficulty)) return false;
+        if (typeSet && !typeSet.has(q.type as QuizQuestionType)) return false;
+        if (answeredIds && answeredIds.has(q.id)) return false;
+        return true;
+      });
     }
 
     const shuffled = shuffleArray(pool);
@@ -84,18 +97,19 @@ const QuizSession = ({ topicIds, initialMode, initialCount, skipSetup }: QuizSes
 
     dispatch({ type: 'START_SESSION', payload: { mode: selectedMode, questions: selected } });
     questionStartTime.current = Date.now();
-  }, [allQuestions, reviewItems, selectedMode, selectedCount, topicIds, dispatch]);
+  }, [allQuestions, reviewItems, selectedMode, selectedCount, topicIds, difficulties, questionTypes, unansweredOnly, progressData, dispatch]);
 
   // Auto-start when skipSetup is true and data is ready
   useEffect(() => {
     if (skipSetup && !hasAutoStarted.current && state.phase === 'setup') {
-      const dataReady = selectedMode === 'review' ? !!reviewItems : !!allQuestions;
-      if (dataReady) {
+      const questionsReady = selectedMode === 'review' ? !!reviewItems : !!allQuestions;
+      const progressReady = !unansweredOnly || !!progressData;
+      if (questionsReady && progressReady) {
         hasAutoStarted.current = true;
         handleStart();
       }
     }
-  }, [skipSetup, allQuestions, reviewItems, selectedMode, state.phase, handleStart]);
+  }, [skipSetup, allQuestions, reviewItems, selectedMode, unansweredOnly, progressData, state.phase, handleStart]);
 
   const handleAnswer = useCallback(
     (selectedIndex: number | null, result: ProgressResult): void => {

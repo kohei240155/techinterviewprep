@@ -10,6 +10,7 @@ import { z } from 'zod';
 
 export type Language = 'ja' | 'en';
 export type QuestionType = 'multiple' | 'code' | 'truefalse' | 'explain';
+export type QuizQuestionType = 'multiple' | 'code' | 'truefalse';
 export type Difficulty = 'easy' | 'medium' | 'hard';
 export type QuizMode = 'new' | 'review';
 export type QuestionCount = 5 | 10 | 15 | 20 | 'all';

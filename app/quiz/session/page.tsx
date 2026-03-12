@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import QuizSession from '@/components/quiz/QuizSession';
-import type { QuizMode, QuestionCount } from '@/types';
+import type { QuizMode, QuestionCount, Difficulty, QuizQuestionType } from '@/types';
 
 const VALID_COUNTS: QuestionCount[] = [5, 10, 15, 20, 'all'];
 
@@ -20,11 +20,29 @@ const QuizSessionContent = () => {
       ? (Number(countParam) as QuestionCount)
       : 10;
 
+  const VALID_DIFFICULTIES: Difficulty[] = ['easy', 'medium', 'hard'];
+  const VALID_TYPES: QuizQuestionType[] = ['multiple', 'code', 'truefalse'];
+
+  const difficultyParam = searchParams.get('difficulty');
+  const difficulties = difficultyParam
+    ? difficultyParam.split(',').filter((d): d is Difficulty => VALID_DIFFICULTIES.includes(d as Difficulty))
+    : undefined;
+
+  const typesParam = searchParams.get('types');
+  const questionTypes = typesParam
+    ? typesParam.split(',').filter((t): t is QuizQuestionType => VALID_TYPES.includes(t as QuizQuestionType))
+    : undefined;
+
+  const unansweredOnly = searchParams.get('unanswered') === '1';
+
   return (
     <QuizSession
       topicIds={topicIds}
       initialMode={mode}
       initialCount={count}
+      difficulties={difficulties}
+      questionTypes={questionTypes}
+      unansweredOnly={unansweredOnly}
       skipSetup
     />
   );

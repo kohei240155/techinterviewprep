@@ -1,14 +1,17 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import ExplainSession from '@/components/explain/ExplainSession';
 
 const ExplainPage = () => {
   const params = useParams<{ topicId: string }>();
+  const searchParams = useSearchParams();
+  const questionsParam = searchParams.get('questions');
+  const questionIds = questionsParam ? questionsParam.split(',') : undefined;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <ExplainSession topicId={params.topicId} />
+      <ExplainSession topicId={params.topicId} questionIds={questionIds} />
     </div>
   );
 };
