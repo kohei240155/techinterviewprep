@@ -83,10 +83,10 @@ const ResultsSummary = ({ result, topicId, onRetry, language }: ResultsSummaryPr
 
       <div className="flex gap-4">
         <a
-          href={`/topics/${topicId}`}
+          href="/"
           className="btn-secondary flex-1"
         >
-          {t('quiz.backToTopic', language)}
+          {t('quiz.backToHome', language)}
         </a>
         <button
           type="button"

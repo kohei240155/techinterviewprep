@@ -132,10 +132,10 @@ const ResultsSummary = ({ result, topicId, onRetry, language }: ResultsSummaryPr
           {t('quiz.retry', language)}
         </button>
         <Link
-          href={`/topics/${topicId}`}
+          href="/"
           className="btn-secondary px-6 py-2.5"
         >
-          {t('quiz.backToTopic', language)}
+          {t('quiz.backToHome', language)}
         </Link>
       </div>
     </div>

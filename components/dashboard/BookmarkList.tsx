@@ -61,7 +61,7 @@ const BookmarkList = ({ bookmarks, userId, language }: BookmarkListProps) => {
               >
                 <div className="min-w-0 flex-1">
                   <Link
-                    href={`/topics/${q.topic_id}`}
+                    href={`/quiz/${q.topic_id}`}
                     className="text-sm font-medium text-gray-900 hover:text-primary-600 dark:text-gray-100 dark:hover:text-primary-400"
                   >
                     {language === 'ja' ? q.question_ja : q.question_en}

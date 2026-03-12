@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useRef, useCallback, useMemo } from 'react';
+import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import { useQuizSession } from '@/hooks/useQuizSession';
-import { useQuestions } from '@/hooks/queries/useQuestions';
+import { useMultiTopicQuestions } from '@/hooks/queries/useMultiTopicQuestions';
 import { useReviewItems } from '@/hooks/queries/useReviewItems';
 import { useProgressUpsert } from '@/hooks/queries/useProgress';
 import { useFSRS } from '@/hooks/useFSRS';
@@ -15,7 +15,10 @@ import QuestionCard from './QuestionCard';
 import ResultsSummary from './ResultsSummary';
 
 interface QuizSessionProps {
-  topicId: string;
+  topicIds: string[];
+  initialMode?: QuizMode;
+  initialCount?: QuestionCount;
+  skipSetup?: boolean;
 }
 
 const QUESTION_COUNTS: QuestionCount[] = [5, 10, 15, 20, 'all'];
@@ -29,37 +32,45 @@ const shuffleArray = <T,>(arr: T[]): T[] => {
   return shuffled;
 };
 
-const QuizSession = ({ topicId }: QuizSessionProps) => {
+const QuizSession = ({ topicIds, initialMode, initialCount, skipSetup }: QuizSessionProps) => {
   const [state, dispatch] = useQuizSession();
   const { language } = useLanguage();
   const { user } = useAuth();
-  const { data: allQuestions, isLoading: questionsLoading, error: questionsError } = useQuestions(topicId);
+  const { data: allQuestions, isLoading: questionsLoading, error: questionsError } = useMultiTopicQuestions(topicIds);
   const { data: reviewItems } = useReviewItems(user?.id);
   const progressUpsert = useProgressUpsert();
   const { schedule } = useFSRS();
 
-  const [selectedMode, setSelectedMode] = useState<QuizMode>('new');
-  const [selectedCount, setSelectedCount] = useState<QuestionCount>(10);
+  const [selectedMode, setSelectedMode] = useState<QuizMode>(initialMode ?? 'new');
+  const [selectedCount, setSelectedCount] = useState<QuestionCount>(initialCount ?? 10);
   const questionStartTime = useRef<number>(Date.now());
+  const hasAutoStarted = useRef(false);
 
   const handleStart = useCallback((): void => {
-    if (!allQuestions) return;
-
     let pool: Question[];
     if (selectedMode === 'review' && reviewItems) {
+      const topicIdSet = new Set(topicIds);
       const reviewQuestionIds = new Set(
         reviewItems
           .filter((item) => {
             const q = item.questions as unknown as Question | null;
-            return q && q.topic_id === topicId;
+            return q && (topicIds.length === 0 || topicIdSet.has(q.topic_id));
           })
           .map((item) => {
             const q = item.questions as unknown as Question;
             return q.id;
           })
       );
-      pool = allQuestions.filter((q: Question) => reviewQuestionIds.has(q.id));
+      // For review mode, use questions from reviewItems directly
+      const reviewQuestions = reviewItems
+        .filter((item) => {
+          const q = item.questions as unknown as Question | null;
+          return q && reviewQuestionIds.has(q.id);
+        })
+        .map((item) => item.questions as unknown as Question);
+      pool = reviewQuestions;
     } else {
+      if (!allQuestions) return;
       pool = allQuestions.filter(
         (q: Question) => q.type !== 'explain'
       );
@@ -73,7 +84,18 @@ const QuizSession = ({ topicId }: QuizSessionProps) => {
 
     dispatch({ type: 'START_SESSION', payload: { mode: selectedMode, questions: selected } });
     questionStartTime.current = Date.now();
-  }, [allQuestions, reviewItems, selectedMode, selectedCount, topicId, dispatch]);
+  }, [allQuestions, reviewItems, selectedMode, selectedCount, topicIds, dispatch]);
+
+  // Auto-start when skipSetup is true and data is ready
+  useEffect(() => {
+    if (skipSetup && !hasAutoStarted.current && state.phase === 'setup') {
+      const dataReady = selectedMode === 'review' ? !!reviewItems : !!allQuestions;
+      if (dataReady) {
+        hasAutoStarted.current = true;
+        handleStart();
+      }
+    }
+  }, [skipSetup, allQuestions, reviewItems, selectedMode, state.phase, handleStart]);
 
   const handleAnswer = useCallback(
     (selectedIndex: number | null, result: ProgressResult): void => {
@@ -120,7 +142,7 @@ const QuizSession = ({ topicId }: QuizSessionProps) => {
     const total = state.answers.length;
 
     return {
-      topic_id: topicId,
+      topic_id: topicIds[0] ?? '',
       total_questions: total,
       correct_count: correct,
       wrong_count: wrong,
@@ -141,7 +163,7 @@ const QuizSession = ({ topicId }: QuizSessionProps) => {
         };
       }),
     };
-  }, [state.phase, state.answers, state.questions, state.totalTime, topicId]);
+  }, [state.phase, state.answers, state.questions, state.totalTime, topicIds]);
 
   // -- Loading / Error states --
   if (questionsLoading) {
@@ -327,7 +349,7 @@ const QuizSession = ({ topicId }: QuizSessionProps) => {
     return (
       <ResultsSummary
         result={sessionResult}
-        topicId={topicId}
+        topicId={topicIds[0] ?? ''}
         onRetry={handleRetry}
         language={language}
       />
