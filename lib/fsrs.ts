@@ -12,10 +12,22 @@ export function scheduleFSRS(
   const scheduling = f.repeat(currentCard, now);
   const result = scheduling[rating as Grade];
 
+  // 日単位の復習ルール:
+  // 不正解(rating 1) → 即座に復習可能 (due_date = now)
+  // 正解(rating >= 3) → 最低でも翌日0:00まで出題しない
+  let dueDate: Date;
+  if (rating >= 3) {
+    const tomorrow = new Date(now);
+    tomorrow.setHours(24, 0, 0, 0);
+    dueDate = result.card.due > tomorrow ? result.card.due : tomorrow;
+  } else {
+    dueDate = now;
+  }
+
   return {
     stability: result.card.stability,
     difficulty_fsrs: result.card.difficulty,
-    due_date: result.card.due.toISOString(),
+    due_date: dueDate.toISOString(),
     reps: result.card.reps,
     lapses: result.card.lapses,
     state: result.card.state as 0 | 1 | 2 | 3,
