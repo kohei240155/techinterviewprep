@@ -35,9 +35,7 @@ const QuestionCard = ({ question, language, phase, selectedIndex, onAnswer }: Qu
   const questionText = language === 'ja' ? question.question_ja : question.question_en;
   const explanationText = language === 'ja' ? question.explanation_ja : question.explanation_en;
 
-  const { text: displayText, code, lang } = question.type === 'code'
-    ? extractCodeBlock(questionText)
-    : { text: questionText, code: null, lang: null };
+  const { text: displayText, code, lang } = extractCodeBlock(questionText);
 
   const handleMultipleSelect = (index: number): void => {
     if (isAnswered) return;

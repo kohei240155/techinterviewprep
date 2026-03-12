@@ -1,0 +1,434 @@
+{
+  "topic_id": "b1b2c3d4-0001-4000-8000-000000000001",
+  "topic_name": "Closures, Scope & this",
+  "created_at": "2026-03-11",
+  "imported_dev": true,
+  "imported_prod": false,
+  "questions": [
+    {
+      "type": "multiple",
+      "difficulty": "easy",
+      "question_ja": "JavaScriptにおいて、関数内で変数を解決する際のスコープチェーンの探索順序として正しいものはどれですか？",
+      "question_en": "Which of the following correctly describes the order in which JavaScript traverses the scope chain when resolving a variable inside a function?",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "グローバルスコープ → 外側の関数スコープ → 自身のローカルスコープ",
+          "text_en": "Global scope → Outer function scope → Own local scope"
+        },
+        {
+          "label": "B",
+          "text_ja": "自身のローカルスコープ → 外側の関数スコープ → グローバルスコープ",
+          "text_en": "Own local scope → Outer function scope → Global scope"
+        },
+        {
+          "label": "C",
+          "text_ja": "自身のローカルスコープ → グローバルスコープ → 外側の関数スコープ",
+          "text_en": "Own local scope → Global scope → Outer function scope"
+        },
+        {
+          "label": "D",
+          "text_ja": "外側の関数スコープ → 自身のローカルスコープ → グローバルスコープ",
+          "text_en": "Outer function scope → Own local scope → Global scope"
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "JavaScriptエンジンは変数を解決する際、まず自身のローカルスコープを探し、見つからなければ外側の関数スコープを探し、最終的にグローバルスコープまで遡ります。これが「スコープチェーン」です。レキシカルスコープ（静的スコープ）に基づいており、関数が「どこで定義されたか」によってチェーンが決まります。実行時の呼び出し位置は関係ありません。",
+      "explanation_en": "When resolving a variable, the JavaScript engine first searches the function's own local scope, then moves outward to enclosing function scopes, and finally reaches the global scope. This is called the \"scope chain.\" It is based on lexical (static) scoping, meaning the chain is determined by where the function is defined, not where it is called."
+    },
+    {
+      "type": "multiple",
+      "difficulty": "medium",
+      "question_ja": "次のうち、IIFE（即時実行関数式）がクロージャと組み合わせて使われる主な理由として最も適切なものはどれですか？",
+      "question_en": "Which of the following best describes the primary reason IIFEs (Immediately Invoked Function Expressions) are used in combination with closures?",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "関数の実行速度を向上させるため",
+          "text_en": "To improve function execution speed"
+        },
+        {
+          "label": "B",
+          "text_ja": "新しいスコープを作り、変数をカプセル化して外部からのアクセスを防ぐため",
+          "text_en": "To create a new scope that encapsulates variables and prevents external access"
+        },
+        {
+          "label": "C",
+          "text_ja": "グローバル変数を効率的に管理するため",
+          "text_en": "To efficiently manage global variables"
+        },
+        {
+          "label": "D",
+          "text_ja": "非同期処理のコールバック地獄を解決するため",
+          "text_en": "To solve callback hell in asynchronous processing"
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "IIFEは即座に実行されて新しい関数スコープを生成します。この中で定義された変数は外部からアクセスできません。モジュールパターンの基盤として、IIFEが返す関数（クロージャ）だけが内部変数にアクセスできるようにすることで、プライベートな状態を実現します。ES Modulesが普及する前は、名前空間の汚染を防ぐ主要なパターンでした。",
+      "explanation_en": "An IIFE executes immediately and creates a new function scope. Variables defined inside are inaccessible from outside. As the foundation of the module pattern, only the returned functions (closures) can access the internal variables, achieving private state. Before ES Modules became widespread, this was the primary pattern for preventing namespace pollution."
+    },
+    {
+      "type": "code",
+      "difficulty": "medium",
+      "question_ja": "次のコードの出力結果はどうなりますか？また、なぜそうなるのか考えてください。\n\n```javascript\nfunction createMultiplier(x) {\n  return function(y) {\n    return x * y;\n  };\n}\n\nconst double = createMultiplier(2);\nconst triple = createMultiplier(3);\n\nconsole.log(double(5));\nconsole.log(triple(5));\nconsole.log(double === triple);\n```",
+      "question_en": "What will be the output of the following code? Think about why it produces that result.\n\n```javascript\nfunction createMultiplier(x) {\n  return function(y) {\n    return x * y;\n  };\n}\n\nconst double = createMultiplier(2);\nconst triple = createMultiplier(3);\n\nconsole.log(double(5));\nconsole.log(triple(5));\nconsole.log(double === triple);\n```",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "10, 15, true",
+          "text_en": "10, 15, true"
+        },
+        {
+          "label": "B",
+          "text_ja": "10, 15, false",
+          "text_en": "10, 15, false"
+        },
+        {
+          "label": "C",
+          "text_ja": "15, 15, false",
+          "text_en": "15, 15, false"
+        },
+        {
+          "label": "D",
+          "text_ja": "10, 10, true",
+          "text_en": "10, 10, true"
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "createMultiplierを呼び出すたびに新しいクロージャが生成され、それぞれが独自のxの値を保持します。doubleはx=2、tripleはx=3をキャプチャしているため、double(5)は10、triple(5)は15を返します。double === tripleがfalseなのは、各呼び出しが新しい関数オブジェクトを生成するためです。同じ関数から生成されても、異なるオブジェクトとして扱われます。これはクロージャが「値のコピー」ではなく「独立した環境の参照」を持つことを示しています。",
+      "explanation_en": "Each call to createMultiplier creates a new closure with its own captured value of x. double captures x=2 and triple captures x=3, so double(5) returns 10 and triple(5) returns 15. double === triple is false because each call creates a new function object — even though they come from the same function, they are distinct objects. This illustrates that closures hold references to independent environments, not copies of values."
+    },
+    {
+      "type": "code",
+      "difficulty": "medium",
+      "question_ja": "次のコードの出力結果はどうなりますか？変数シャドウイングがクロージャにどう影響するか考えてください。\n\n```javascript\nlet x = 'global';\n\nfunction outer() {\n  let x = 'outer';\n\n  function middle() {\n    let x = 'middle';\n\n    function inner() {\n      console.log(x);\n    }\n\n    return inner;\n  }\n\n  return middle;\n}\n\nconst middleFn = outer();\nconst innerFn = middleFn();\ninnerFn();\n```",
+      "question_en": "What will be the output of the following code? Consider how variable shadowing affects the closure.\n\n```javascript\nlet x = 'global';\n\nfunction outer() {\n  let x = 'outer';\n\n  function middle() {\n    let x = 'middle';\n\n    function inner() {\n      console.log(x);\n    }\n\n    return inner;\n  }\n\n  return middle;\n}\n\nconst middleFn = outer();\nconst innerFn = middleFn();\ninnerFn();\n```",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "\"global\"",
+          "text_en": "\"global\""
+        },
+        {
+          "label": "B",
+          "text_ja": "\"outer\"",
+          "text_en": "\"outer\""
+        },
+        {
+          "label": "C",
+          "text_ja": "\"middle\"",
+          "text_en": "\"middle\""
+        },
+        {
+          "label": "D",
+          "text_ja": "ReferenceErrorが発生する",
+          "text_en": "A ReferenceError is thrown"
+        }
+      ],
+      "answer": {
+        "correct_index": 2
+      },
+      "explanation_ja": "inner関数は自身のスコープにxがないため、スコープチェーンを上に辿ります。最も近い外側のスコープであるmiddleにx = 'middle'があるため、そこで解決されます。これが「変数シャドウイング」です — 内側のスコープのxが外側の同名変数を隠します。innerがクロージャとしてどこで実行されようと、定義時のレキシカルスコープに基づいて変数を解決するため、常に\"middle\"が出力されます。3つのxはそれぞれ独立した変数であり、名前が同じだけです。",
+      "explanation_en": "The inner function has no x in its own scope, so it traverses up the scope chain. The nearest enclosing scope with x is middle, where x = 'middle', so it resolves there. This is \"variable shadowing\" — the inner scope's x hides the outer variable with the same name. Regardless of where inner is executed as a closure, it resolves variables based on its lexical scope at definition time, always outputting \"middle\". The three x variables are independent; they only share the same name."
+    },
+    {
+      "type": "multiple",
+      "difficulty": "easy",
+      "question_ja": "クロージャが「値のコピー」ではなく「変数への参照」を保持することを最もよく示している現象はどれですか？",
+      "question_en": "Which of the following phenomena best demonstrates that closures capture a reference to the variable, not a copy of its value?",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "クロージャ内から外側の変数を読み取れること",
+          "text_en": "Being able to read an outer variable from within a closure"
+        },
+        {
+          "label": "B",
+          "text_ja": "外側の変数が後から変更されると、クロージャから読み取る値も変わること",
+          "text_en": "When the outer variable is changed later, the value read from the closure also changes"
+        },
+        {
+          "label": "C",
+          "text_ja": "クロージャが新しい関数オブジェクトとして生成されること",
+          "text_en": "The closure being created as a new function object"
+        },
+        {
+          "label": "D",
+          "text_ja": "クロージャが外側のスコープの変数を上書きできないこと",
+          "text_en": "The closure being unable to overwrite variables in the outer scope"
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "クロージャは外側のスコープの変数そのもの（参照）を保持します。値のコピーではないため、外側で変数が変更されると、クロージャから読み取る値も変わります。逆にクロージャ内で変数を変更すると、外側にも反映されます。例えば let x = 1; const fn = () => x; x = 2; fn() は 2 を返します。この「参照のキャプチャ」という性質が、ループ+var+setTimeoutの古典的な問題の原因でもあります。選択肢Dは誤りで、クロージャは外側の変数を変更できます。",
+      "explanation_en": "Closures capture the variable itself (a reference), not a copy of its value. Since it's not a copy, if the outer variable changes, the value read from the closure changes too. Conversely, modifying the variable inside the closure is reflected outside. For example, let x = 1; const fn = () => x; x = 2; fn() returns 2. This \"capture by reference\" behavior is also the root cause of the classic loop + var + setTimeout problem. Option D is incorrect — closures can modify outer variables."
+    },
+    {
+      "type": "code",
+      "difficulty": "hard",
+      "question_ja": "次のコードの出力結果はどうなりますか？各console.logが実行される時点での変数の状態を追ってみてください。\n\n```javascript\nfunction outer() {\n  let count = 0;\n\n  function inner() {\n    count++;\n    console.log(count);\n  }\n\n  return inner;\n}\n\nconst fn1 = outer();\nconst fn2 = outer();\n\nfn1();\nfn1();\nfn2();\nfn1();\n```",
+      "question_en": "What will be the output of the following code? Trace the state of the variable at each console.log execution.\n\n```javascript\nfunction outer() {\n  let count = 0;\n\n  function inner() {\n    count++;\n    console.log(count);\n  }\n\n  return inner;\n}\n\nconst fn1 = outer();\nconst fn2 = outer();\n\nfn1();\nfn1();\nfn2();\nfn1();\n```",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "1, 2, 3, 4",
+          "text_en": "1, 2, 3, 4"
+        },
+        {
+          "label": "B",
+          "text_ja": "1, 2, 1, 3",
+          "text_en": "1, 2, 1, 3"
+        },
+        {
+          "label": "C",
+          "text_ja": "1, 1, 1, 1",
+          "text_en": "1, 1, 1, 1"
+        },
+        {
+          "label": "D",
+          "text_ja": "1, 2, 1, 2",
+          "text_en": "1, 2, 1, 2"
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "outer()を呼ぶたびに新しいレキシカル環境が生成され、それぞれ独立したcount変数が存在します。fn1とfn2は異なるouter()呼び出しから返されたクロージャなので、それぞれ独自のcountを持ちます。fn1()を2回呼ぶとcountは1→2に。fn2()は別のcountを持つので1を出力。その後fn1()を呼ぶと元のcountが3になります。クロージャは変数の「値」ではなく「参照」を保持するため、呼び出しごとに状態が変化します。かつ、各outer()呼び出しは独立した環境を作ります。",
+      "explanation_en": "Each call to outer() creates a new lexical environment with its own independent count variable. fn1 and fn2 are closures from different outer() calls, so they have separate count variables. Calling fn1() twice increments its count to 1 then 2. fn2() has a different count, outputting 1. Calling fn1() again increments its count to 3. Closures retain a reference to the variable, not a copy of its value, so the state changes with each call. And each outer() invocation creates an independent environment."
+    },
+    {
+      "type": "multiple",
+      "difficulty": "medium",
+      "question_ja": "次のコードで、privateVarに外部からアクセスできない理由を最も正確に説明しているのはどれですか？\n\n```javascript\nconst module = (function() {\n  let privateVar = 42;\n  return {\n    getVar: () => privateVar,\n    setVar: (val) => { privateVar = val; }\n  };\n})();\n```",
+      "question_en": "Which of the following most accurately explains why privateVar is not accessible from outside in the following code?\n\n```javascript\nconst module = (function() {\n  let privateVar = 42;\n  return {\n    getVar: () => privateVar,\n    setVar: (val) => { privateVar = val; }\n  };\n})();\n```",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "letはブロックスコープを持つため、IIFEの外からはアクセスできない",
+          "text_en": "let has block scope, so it cannot be accessed from outside the IIFE"
+        },
+        {
+          "label": "B",
+          "text_ja": "IIFEが関数スコープを生成し、privateVarはそのスコープ内にのみ存在する。返されたメソッドはクロージャとしてprivateVarへの参照を保持するが、外部コードは直接アクセスできない",
+          "text_en": "The IIFE creates a function scope where privateVar exists only within it. The returned methods retain a reference to privateVar as closures, but external code cannot access it directly"
+        },
+        {
+          "label": "C",
+          "text_ja": "privateVarは即時実行後にガベージコレクションされるが、返されたメソッドがキャッシュを保持する",
+          "text_en": "privateVar is garbage collected after immediate execution, but the returned methods hold a cache"
+        },
+        {
+          "label": "D",
+          "text_ja": "オブジェクトのプロパティとして公開されていないため、JavaScriptのプロトタイプチェーンで見つからない",
+          "text_en": "It is not exposed as an object property, so JavaScript's prototype chain cannot find it"
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "IIFEは即座に実行されて関数スコープを作ります。privateVarはこのスコープ内のローカル変数です。返されたオブジェクトのgetVarとsetVarはクロージャとして、自身が定義されたレキシカル環境への参照を保持しているため、privateVarにアクセスし続けられます。しかし、外部コードはIIFEのスコープに入る手段がないため、privateVarに直接アクセスすることはできません。選択肢Aは部分的に正しいですが、ブロックスコープよりも関数スコープとクロージャの仕組みが本質的な理由です。選択肢Cは誤りで、クロージャが参照を保持しているためGCされません。",
+      "explanation_en": "The IIFE executes immediately and creates a function scope. privateVar is a local variable within this scope. The returned getVar and setVar are closures that retain a reference to the lexical environment where they were defined, so they can continue to access privateVar. However, external code has no way to enter the IIFE's scope, making privateVar directly inaccessible. Option A is partially correct, but function scope and closures are the essential mechanism, not just block scoping. Option C is wrong — privateVar is not garbage collected because the closure holds a reference."
+    },
+    {
+      "type": "truefalse",
+      "difficulty": "medium",
+      "question_ja": "次のコードで、`const self = this;` のパターンが使われる理由は、通常の関数宣言のコールバック内では `this` が外側の `this` と異なる値を持つ可能性があるためである。\n\n```javascript\nfunction Timer() {\n  const self = this;\n  setTimeout(function() {\n    self.elapsed = true;\n  }, 1000);\n}\n```",
+      "question_en": "In the following code, the `const self = this;` pattern is used because inside a regular function callback, `this` may have a different value than the outer `this`.\n\n```javascript\nfunction Timer() {\n  const self = this;\n  setTimeout(function() {\n    self.elapsed = true;\n  }, 1000);\n}\n```",
+      "options": null,
+      "answer": {
+        "correct_value": true
+      },
+      "explanation_ja": "正解はTrueです。setTimeoutに渡された通常の関数のコールバック内では、thisはデフォルトバインディングによりグローバルオブジェクト（strictモードではundefined）になります。Timerコンストラクタ内のthis（新しいインスタンス）とは異なります。const self = thisはthisの値を通常の変数に保存することで、クロージャを通じてコールバック内からアクセス可能にするテクニックです。現在はアロー関数（レキシカルthis）で同じことがより簡潔に実現できるため、このパターンはレガシーコードで見ることが多いですが、thisの動的バインディングの仕組みを理解する上で重要です。",
+      "explanation_en": "The answer is True. Inside the regular function callback passed to setTimeout, this is the global object (or undefined in strict mode) due to default binding — different from the this inside the Timer constructor (the new instance). const self = this saves the this value into a regular variable, making it accessible inside the callback through closure. Today, arrow functions (lexical this) achieve the same thing more concisely, so this pattern is mostly seen in legacy code, but it's important for understanding how this dynamic binding works."
+    },
+    {
+      "type": "multiple",
+      "difficulty": "medium",
+      "question_ja": "次のコードでobj.greet()を呼んだ場合、this.nameはどのように解決されますか？\n\n```javascript\nconst obj = {\n  name: \"Alice\",\n  greet: function() {\n    const inner = function() {\n      return this.name;\n    };\n    return inner();\n  }\n};\n\nconsole.log(obj.greet());\n```",
+      "question_en": "When obj.greet() is called in the following code, how is this.name resolved?\n\n```javascript\nconst obj = {\n  name: \"Alice\",\n  greet: function() {\n    const inner = function() {\n      return this.name;\n    };\n    return inner();\n  }\n};\n\nconsole.log(obj.greet());\n```",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "\"Alice\" — innerはクロージャとしてobjのthisを継承する",
+          "text_en": "\"Alice\" — inner inherits obj's this as a closure"
+        },
+        {
+          "label": "B",
+          "text_ja": "undefined — innerは通常の関数呼び出しなのでthisはグローバル（strictモードではundefined）になる",
+          "text_en": "undefined — inner is a regular function call so this is global (or undefined in strict mode)"
+        },
+        {
+          "label": "C",
+          "text_ja": "TypeErrorが発生する",
+          "text_en": "A TypeError is thrown"
+        },
+        {
+          "label": "D",
+          "text_ja": "\"\" — thisは空のオブジェクトを参照する",
+          "text_en": "\"\" — this refers to an empty object"
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "通常の関数のthisは「どのように呼ばれたか」で決まります（動的バインディング）。inner()はobj.inner()ではなく単なる関数呼び出しとして実行されるため、thisはobjではなくグローバルオブジェクト（strictモードではundefined）になります。クロージャは外側のスコープの「変数」を保持しますが、thisは変数ではないため、クロージャで自動的に保持されません。これを解決するには、アロー関数を使う（レキシカルthis）、.bind(this)を使う、または外側でconst self = thisとして変数に保存する方法があります。",
+      "explanation_en": "A regular function's this is determined by how it is called (dynamic binding). inner() is called as a plain function, not as obj.inner(), so this is the global object (or undefined in strict mode), not obj. Closures retain outer scope variables, but this is not a variable, so it is not automatically captured by closures. Solutions include using arrow functions (lexical this), .bind(this), or saving this to a variable like const self = this."
+    },
+    {
+      "type": "explain",
+      "difficulty": "hard",
+      "question_ja": "クロージャがメモリに与える影響について説明してください。クロージャによるメモリリークが発生するシナリオと、それを防ぐためのベストプラクティスを具体例とともに述べてください。",
+      "question_en": "Explain how closures affect memory. Describe scenarios where closures can cause memory leaks and best practices to prevent them, with concrete examples.",
+      "options": {
+        "rubric_ja": {
+          "1": "クロージャとメモリの関係を説明できない",
+          "2": "クロージャが変数を保持することは理解しているが、メモリリークのシナリオを具体的に説明できない",
+          "3": "メモリリークのシナリオを1つ以上説明でき、防止策も述べられる",
+          "4": "複数のシナリオ（イベントリスナー、タイマー、DOM参照等）を説明し、GCの仕組みと関連付けて防止策を体系的に述べられる"
+        },
+        "rubric_en": {
+          "1": "Cannot explain the relationship between closures and memory",
+          "2": "Understands closures retain variables but cannot concretely describe memory leak scenarios",
+          "3": "Can describe at least one memory leak scenario and prevention measures",
+          "4": "Explains multiple scenarios (event listeners, timers, DOM references, etc.) and systematically describes prevention measures in relation to GC mechanisms"
+        }
+      },
+      "answer": {
+        "model_answer_ja": "クロージャは外側のスコープの変数への参照を保持するため、その変数はクロージャが存在する限りガベージコレクションされません。メモリリークが発生する典型的なシナリオは3つあります。(1) イベントリスナーの未解除：DOM要素にクロージャをイベントリスナーとして追加し、要素の削除時にリスナーを解除しないと、クロージャとそれが参照する変数がメモリに残り続けます。(2) タイマーの未クリア：setIntervalのコールバックが外部変数を参照している場合、clearIntervalしない限りクロージャとその変数は解放されません。(3) 不要なDOM参照の保持：クロージャ内でDOM要素への参照を保持すると、その要素がDOMツリーから削除されてもメモリ上に残ります。防止策としては、不要になったイベントリスナーをremoveEventListenerで解除する、タイマーを適切にclearTimeout/clearIntervalする、WeakRefやWeakMapを使ってGCを妨げない参照を持つ、クロージャ内で必要な変数のみを参照するよう設計する、などがあります。",
+        "model_answer_en": "Closures retain references to variables in their outer scope, preventing those variables from being garbage collected as long as the closure exists. There are three typical scenarios where memory leaks occur: (1) Unreleased event listeners: When a closure is added as an event listener to a DOM element and the listener is not removed when the element is deleted, the closure and its referenced variables remain in memory. (2) Uncleared timers: When a setInterval callback references outer variables, the closure and those variables are not freed until clearInterval is called. (3) Retaining unnecessary DOM references: When a closure holds a reference to a DOM element, that element remains in memory even after being removed from the DOM tree. Prevention measures include removing event listeners with removeEventListener when no longer needed, properly clearing timers with clearTimeout/clearInterval, using WeakRef or WeakMap to hold references that don't prevent GC, and designing closures to reference only necessary variables."
+      },
+      "explanation_ja": "",
+      "explanation_en": ""
+    },
+    {
+      "type": "code",
+      "difficulty": "hard",
+      "question_ja": "次のコードの出力結果はどうなりますか？thisのバインディングがどのように変化するか追ってみてください。\n\n```javascript\nconst obj = {\n  value: 42,\n  getValue: function() {\n    return this.value;\n  },\n  getValueArrow: () => {\n    return this.value;\n  }\n};\n\nconst { getValue, getValueArrow } = obj;\n\nconsole.log(obj.getValue());\nconsole.log(obj.getValueArrow());\nconsole.log(getValue());\n```",
+      "question_en": "What will be the output of the following code? Trace how this binding changes in each case.\n\n```javascript\nconst obj = {\n  value: 42,\n  getValue: function() {\n    return this.value;\n  },\n  getValueArrow: () => {\n    return this.value;\n  }\n};\n\nconst { getValue, getValueArrow } = obj;\n\nconsole.log(obj.getValue());\nconsole.log(obj.getValueArrow());\nconsole.log(getValue());\n```",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "42, 42, 42",
+          "text_en": "42, 42, 42"
+        },
+        {
+          "label": "B",
+          "text_ja": "42, undefined, undefined",
+          "text_en": "42, undefined, undefined"
+        },
+        {
+          "label": "C",
+          "text_ja": "42, 42, undefined",
+          "text_en": "42, 42, undefined"
+        },
+        {
+          "label": "D",
+          "text_ja": "42, undefined, 42",
+          "text_en": "42, undefined, 42"
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "obj.getValue()は暗黙的バインディングでthisがobjになるため42を返します。obj.getValueArrow()はアロー関数なので、定義時のレキシカルスコープのthisを使います。オブジェクトリテラルはスコープを作らないため、thisはモジュールスコープ（undefined）またはグローバルオブジェクトになります。よってundefined。getValue()は分割代入で取り出した単独の関数呼び出しなので、暗黙的バインディングが失われ、thisはグローバル（strictモードではundefined）になります。これは重要な落とし穴です：オブジェクトリテラルの中でアロー関数をメソッドとして定義すると、thisが期待通りにならないことがあります。",
+      "explanation_en": "obj.getValue() uses implicit binding so this is obj, returning 42. obj.getValueArrow() is an arrow function that uses this from its lexical scope at definition time. Object literals do not create a scope, so this is the module scope (undefined) or the global object — hence undefined. getValue() is a standalone function call after destructuring, losing implicit binding, so this is global (or undefined in strict mode). This is an important pitfall: defining arrow functions as methods in object literals can lead to unexpected this behavior."
+    },
+    {
+      "type": "truefalse",
+      "difficulty": "medium",
+      "question_ja": "クロージャは外側のスコープの変数すべてを保持するため、クロージャ内で参照していない変数もガベージコレクションされない。",
+      "question_en": "Closures retain all variables from the outer scope, so even variables not referenced inside the closure are not garbage collected.",
+      "options": null,
+      "answer": {
+        "correct_value": false
+      },
+      "explanation_ja": "正解はFalseです。現代のJavaScriptエンジン（V8など）は最適化を行い、クロージャが実際に参照している変数のみを保持します。参照されていない変数はGCの対象になります。ただし、eval()がクロージャ内で使われている場合は例外で、エンジンは実行時にどの変数が必要になるか予測できないため、すべての変数を保持する必要があります。また、デバッガを使用している場合も、デバッグのためにすべての変数が保持されることがあります。この最適化は仕様ではなくエンジンの実装詳細ですが、実践上は信頼できます。",
+      "explanation_en": "The answer is False. Modern JavaScript engines (like V8) optimize closures to retain only the variables actually referenced by the closure. Unreferenced variables are eligible for GC. However, if eval() is used inside the closure, the engine cannot predict which variables will be needed at runtime, so it must retain all variables. Similarly, when using a debugger, all variables may be retained for debugging purposes. This optimization is an engine implementation detail rather than a spec requirement, but it is reliable in practice."
+    },
+    {
+      "type": "multiple",
+      "difficulty": "medium",
+      "question_ja": "次のコードで、カリー化（currying）とクロージャの関係について最も正確な説明はどれですか？\n\n```javascript\nfunction curry(fn) {\n  return function(a) {\n    return function(b) {\n      return fn(a, b);\n    };\n  };\n}\n\nconst add = curry((x, y) => x + y);\nconst add5 = add(5);\nconsole.log(add5(3)); // 8\n```",
+      "question_en": "Which of the following most accurately describes the relationship between currying and closures in the following code?\n\n```javascript\nfunction curry(fn) {\n  return function(a) {\n    return function(b) {\n      return fn(a, b);\n    };\n  };\n}\n\nconst add = curry((x, y) => x + y);\nconst add5 = add(5);\nconsole.log(add5(3)); // 8\n```",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "カリー化はクロージャとは無関係で、単に関数を入れ子にしているだけ",
+          "text_en": "Currying is unrelated to closures; it just nests functions"
+        },
+        {
+          "label": "B",
+          "text_ja": "各返り値の関数がクロージャとして外側の引数（fn、a）を保持するため、部分適用が実現できる",
+          "text_en": "Each returned function is a closure that retains the outer arguments (fn, a), enabling partial application"
+        },
+        {
+          "label": "C",
+          "text_ja": "カリー化は引数を配列に保存して渡す手法であり、クロージャは使われていない",
+          "text_en": "Currying stores arguments in an array, and closures are not used"
+        },
+        {
+          "label": "D",
+          "text_ja": "クロージャはfnのみを保持し、aは即座に評価されて破棄される",
+          "text_en": "The closure only retains fn, and a is immediately evaluated and discarded"
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "カリー化はクロージャの代表的な応用例です。curry(fn)を呼ぶと、fnをクロージャでキャプチャした関数が返されます。次にadd(5)を呼ぶと、fnとa=5の両方をキャプチャした新しいクロージャが返されます。最終的にadd5(3)を呼ぶと、保持されていたfn、a=5、新たなb=3を使ってfn(5, 3)が実行されます。このようにクロージャが引数を段階的に「記憶」することで、関数の部分適用（partial application）が可能になります。関数型プログラミングの基本テクニックです。",
+      "explanation_en": "Currying is a classic application of closures. Calling curry(fn) returns a function that captures fn via closure. Then calling add(5) returns a new closure capturing both fn and a=5. Finally, add5(3) executes fn(5, 3) using the retained fn, a=5, and the new b=3. Closures \"remember\" arguments incrementally, enabling partial application. This is a fundamental technique in functional programming."
+    },
+    {
+      "type": "truefalse",
+      "difficulty": "medium",
+      "question_ja": "オブジェクトリテラルの`{}`はブロックスコープを生成するため、オブジェクト内で定義されたメソッドはオブジェクトのスコープに対するクロージャを形成する。",
+      "question_en": "Object literal `{}` creates a block scope, so methods defined within the object form closures over the object's scope.",
+      "options": null,
+      "answer": {
+        "correct_value": false
+      },
+      "explanation_ja": "正解はFalseです。オブジェクトリテラルの{}はブロックスコープを生成しません。if文やforループの{}とは異なり、オブジェクトリテラルの波括弧は単なるオブジェクト構文です。そのため、オブジェクト内のメソッドが「オブジェクトのスコープ」に対してクロージャを形成することはありません。メソッドが外側の変数にアクセスする場合、それはオブジェクトを囲む関数スコープやモジュールスコープに対するクロージャです。この誤解は「{}ならスコープができる」という過度な一般化から生じます。スコープを作る{}は、ブロック文（if、for、単独の{}ブロック）と関数本体だけです。",
+      "explanation_en": "The answer is False. Object literal {} does not create a block scope. Unlike {} in if statements or for loops, the curly braces in object literals are just object syntax. Therefore, methods within an object do not form closures over an \"object scope.\" If a method accesses outer variables, it closes over the enclosing function scope or module scope, not the object. This misconception arises from overgeneralizing that all {} create scopes. Only block statements (if, for, standalone {} blocks) and function bodies create scopes."
+    },
+    {
+      "type": "multiple",
+      "difficulty": "hard",
+      "question_ja": "次のコードで、class構文内のプライベートフィールド（#count）とクロージャベースのプライベート変数の違いとして、最も正確な説明はどれですか？\n\n```javascript\n// クロージャベース\nfunction createCounter() {\n  let count = 0;\n  return { increment: () => ++count, getCount: () => count };\n}\n\n// クラスベース\nclass Counter {\n  #count = 0;\n  increment() { return ++this.#count; }\n  getCount() { return this.#count; }\n}\n```",
+      "question_en": "Which of the following most accurately describes the difference between private fields (#count) in class syntax and closure-based private variables in the following code?\n\n```javascript\n// Closure-based\nfunction createCounter() {\n  let count = 0;\n  return { increment: () => ++count, getCount: () => count };\n}\n\n// Class-based\nclass Counter {\n  #count = 0;\n  increment() { return ++this.#count; }\n  getCount() { return this.#count; }\n}\n```",
+      "options": [
+        {
+          "label": "A",
+          "text_ja": "両者は完全に同等であり、単なる構文の違いである",
+          "text_en": "Both are completely equivalent; it's just a syntax difference"
+        },
+        {
+          "label": "B",
+          "text_ja": "クロージャ版はインスタンスごとにメソッドの新しい関数オブジェクトが生成されるが、クラス版はプロトタイプでメソッドを共有するためメモリ効率が良い",
+          "text_en": "The closure version creates new function objects for methods per instance, while the class version shares methods via prototype, making it more memory-efficient"
+        },
+        {
+          "label": "C",
+          "text_ja": "クラスのプライベートフィールドはリフレクションでアクセス可能だが、クロージャ変数は絶対にアクセスできない",
+          "text_en": "Class private fields are accessible via reflection, but closure variables are absolutely inaccessible"
+        },
+        {
+          "label": "D",
+          "text_ja": "クロージャ版はプライベートを実現できるが、継承をサポートしない。クラス版はプライベートと継承の両方をサポートする",
+          "text_en": "The closure version can achieve privacy but doesn't support inheritance. The class version supports both privacy and inheritance"
+        }
+      ],
+      "answer": {
+        "correct_index": 1
+      },
+      "explanation_ja": "クロージャベースのパターンでは、createCounter()を呼ぶたびにincrementとgetCountの新しい関数オブジェクトが生成されます。100個のカウンターを作れば200個の関数オブジェクトがメモリに存在します。一方、クラスのincrementとgetCountはCounter.prototypeに1つずつ存在し、全インスタンスで共有されます。メモリ効率の観点からは、多数のインスタンスを作る場合はクラスの方が有利です。選択肢Dも一部正しい点がありますが、クロージャベースでも継承的なパターンは実現可能であり、最も本質的な違いはメモリモデルの違い（インスタンスごと vs プロトタイプ共有）です。選択肢CのリフレクションについてはES2022のプライベートフィールドは通常のリフレクションではアクセスできません。",
+      "explanation_en": "In the closure-based pattern, each call to createCounter() creates new function objects for increment and getCount. Creating 100 counters means 200 function objects in memory. In contrast, the class's increment and getCount exist once on Counter.prototype and are shared across all instances. For memory efficiency with many instances, classes are advantageous. Option D has some truth, but inheritance-like patterns are achievable with closures too; the most essential difference is the memory model (per-instance vs prototype-shared). Regarding Option C, ES2022 private fields are not accessible through normal reflection."
+    }
+  ]
+}
