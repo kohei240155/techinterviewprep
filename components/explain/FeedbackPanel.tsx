@@ -3,6 +3,7 @@
 import { t } from '@/lib/i18n';
 import { isExplainAnswer } from '@/types';
 import type { FeedbackResult, ExplainQuestion, Language } from '@/types';
+import MarkdownText from '@/components/common/MarkdownText';
 
 interface FeedbackPanelProps {
   feedback: FeedbackResult;
@@ -38,9 +39,9 @@ const FeedbackPanel = ({ feedback, question, language }: FeedbackPanelProps) => 
           <span className="text-sm text-gray-500 dark:text-gray-400">/ 4</span>
         </div>
 
-        <p className="whitespace-pre-wrap text-gray-800 dark:text-gray-200">
+        <MarkdownText className="whitespace-pre-wrap text-gray-800 dark:text-gray-200">
           {feedback.feedback}
-        </p>
+        </MarkdownText>
       </div>
 
       {modelAnswer && (
@@ -48,9 +49,9 @@ const FeedbackPanel = ({ feedback, question, language }: FeedbackPanelProps) => 
           <h4 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-300">
             {language === 'ja' ? '模範解答' : 'Model Answer'}
           </h4>
-          <p className="whitespace-pre-wrap text-gray-700 dark:text-gray-300">
+          <MarkdownText className="whitespace-pre-wrap text-gray-700 dark:text-gray-300">
             {modelAnswer}
-          </p>
+          </MarkdownText>
         </div>
       )}
     </div>
