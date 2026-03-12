@@ -10,7 +10,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
 import { t } from '@/lib/i18n';
 import { quizResultToRating } from '@/types';
-import type { Question, QuizMode, QuestionCount, ProgressResult, SessionResult, Difficulty, QuizQuestionType } from '@/types';
+import type { Question, QuizMode, QuestionCount, ProgressResult, SessionResult, Difficulty, QuizQuestionType, Progress } from '@/types';
 import QuestionCard from './QuestionCard';
 import ResultsSummary from './ResultsSummary';
 
@@ -41,9 +41,17 @@ const QuizSession = ({ topicIds, initialMode, initialCount, difficulties, questi
   const { user } = useAuth();
   const { data: allQuestions, isLoading: questionsLoading, error: questionsError } = useMultiTopicQuestions(topicIds);
   const { data: reviewItems } = useReviewItems(user?.id);
-  const { data: progressData } = useProgress(unansweredOnly ? user?.id : undefined);
+  const { data: progressData } = useProgress(user?.id);
   const progressUpsert = useProgressUpsert();
   const { schedule } = useFSRS();
+
+  const progressMap = useMemo(() => {
+    const map = new Map<string, Progress>();
+    if (progressData) {
+      for (const p of progressData as Progress[]) map.set(p.question_id, p);
+    }
+    return map;
+  }, [progressData]);
 
   const [selectedMode, setSelectedMode] = useState<QuizMode>(initialMode ?? 'new');
   const [selectedCount, setSelectedCount] = useState<QuestionCount>(initialCount ?? 10);
@@ -124,7 +132,8 @@ const QuizSession = ({ topicIds, initialMode, initialCount, difficulties, questi
       // FSRS upsert for logged-in users
       if (user && currentQuestion) {
         const rating = quizResultToRating(result);
-        const fsrsData = schedule(null, rating);
+        const existingProgress = progressMap.get(currentQuestion.id) ?? null;
+        const fsrsData = schedule(existingProgress, rating);
         progressUpsert.mutate({
           user_id: user.id,
           question_id: currentQuestion.id,
@@ -135,7 +144,7 @@ const QuizSession = ({ topicIds, initialMode, initialCount, difficulties, questi
         });
       }
     },
-    [state.questions, state.currentIndex, user, dispatch, schedule, progressUpsert]
+    [state.questions, state.currentIndex, user, dispatch, schedule, progressUpsert, progressMap]
   );
 
   const handleNext = useCallback((): void => {

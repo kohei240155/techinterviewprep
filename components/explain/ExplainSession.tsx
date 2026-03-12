@@ -1,15 +1,15 @@
 'use client';
 
-import { useEffect, useRef, useCallback, useState } from 'react';
+import { useEffect, useRef, useCallback, useState, useMemo } from 'react';
 import { useQuestions } from '@/hooks/queries/useQuestions';
 import { useExplainSession } from '@/hooks/useExplainSession';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useAuth } from '@/hooks/useAuth';
-import { useProgressUpsert } from '@/hooks/queries/useProgress';
+import { useProgress, useProgressUpsert } from '@/hooks/queries/useProgress';
 import { useFSRS } from '@/hooks/useFSRS';
 import { t } from '@/lib/i18n';
 import { feedbackRatingToResult } from '@/types';
-import type { ExplainQuestion, SessionResult, PerQuestionResult } from '@/types';
+import type { ExplainQuestion, SessionResult, PerQuestionResult, Progress } from '@/types';
 import PromptCard from '@/components/explain/PromptCard';
 import AnswerInput from '@/components/explain/AnswerInput';
 import FeedbackPanel from '@/components/explain/FeedbackPanel';
@@ -27,8 +27,17 @@ const ExplainSession = ({ topicId, questionIds }: ExplainSessionProps) => {
   const { user } = useAuth();
   const progressUpsert = useProgressUpsert();
   const { schedule } = useFSRS();
+  const { data: progressData } = useProgress(user?.id);
   const questionStartRef = useRef<number>(Date.now());
   const [isFetching, setIsFetching] = useState(false);
+
+  const progressMap = useMemo(() => {
+    const map = new Map<string, Progress>();
+    if (progressData) {
+      for (const p of progressData as Progress[]) map.set(p.question_id, p);
+    }
+    return map;
+  }, [progressData]);
 
   const explainQuestions = (questions ?? [])
     .filter((q): q is ExplainQuestion => q.type === 'explain')
@@ -112,7 +121,8 @@ const ExplainSession = ({ topicId, questionIds }: ExplainSessionProps) => {
     if (lastAnswer?.feedback && user) {
       const rating = lastAnswer.feedback.rating;
       const result = feedbackRatingToResult(rating);
-      const fsrsData = schedule(null, rating);
+      const existingProgress = progressMap.get(lastAnswer.question_id) ?? null;
+      const fsrsData = schedule(existingProgress, rating);
 
       progressUpsert.mutate({
         user_id: user.id,
@@ -125,7 +135,7 @@ const ExplainSession = ({ topicId, questionIds }: ExplainSessionProps) => {
     }
 
     dispatch({ type: 'NEXT_QUESTION' });
-  }, [state.answers, user, schedule, progressUpsert, dispatch]);
+  }, [state.answers, user, schedule, progressUpsert, dispatch, progressMap]);
 
   const handleRetry = useCallback(() => {
     dispatch({ type: 'RESET' });
