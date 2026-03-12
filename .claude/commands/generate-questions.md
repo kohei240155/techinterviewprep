@@ -87,10 +87,10 @@ $ARGUMENTS
 
 ### Step 1: Markdownレビュー用ファイル生成
 
-トピック特定後、まず `questions/{slug}_{YYYYMMDD}_{seq}.md` にMarkdown形式でレビュー用ファイルを作成する。
+トピック特定後、まず `questions/review/{YYYYMMDD}_{slug}_{seq}.md` にMarkdown形式でレビュー用ファイルを作成する。
 
-- `{slug}`: トピック名のスラッグ（例: "Closures & Scope" → "closures-scope"）
 - `{YYYYMMDD}`: 生成日
+- `{slug}`: トピック名のスラッグ（例: "Closures & Scope" → "closures-scope"）
 - `{seq}`: 同一トピック・同日の連番（001, 002, ...）。既存ファイルを確認して衝突しないようにする
 
 Markdownの形式:
@@ -162,8 +162,8 @@ Markdownを出力する前に、各問題を以下の基準で検証し、不合
 
 レビュー承認後:
 
-1. Markdownから `questions/{slug}_{YYYYMMDD}_{seq}.json` を生成する（同名でmdをjsonに変えたファイル名）
-2. `pnpm db:import questions/{slug}_{YYYYMMDD}_{seq}.json` を実行してdev環境に投入する
+1. Markdownから `questions/json/{YYYYMMDD}_{slug}_{seq}.json` を生成する（reviewと同名でディレクトリと拡張子を変えたファイル名）
+2. `pnpm db:import questions/json/{YYYYMMDD}_{slug}_{seq}.json` を実行してdev環境に投入する
 3. import成功後、スクリプトが自動的に `imported_dev: true` に更新する
 4. prod投入はユーザーの指示があった場合のみ `pnpm db:import:prod` で実行する
 

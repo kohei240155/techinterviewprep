@@ -2,7 +2,7 @@
 
 Total: 28 questions
 
-## closures-scope-this_20260311_001.json (13 questions)
+## 20260311_closures-scope-this_001.json (13 questions)
 - [multiple/easy] What is a closure in JavaScript?
 - [multiple/easy] Which of the following correctly describes the scoping behavior of `let`, `co...
 - [multiple/medium] Which statement correctly describes the `this` binding of arrow functions?
@@ -17,7 +17,7 @@ Total: 28 questions
 - [explain/medium] Explain what a closure is and describe at least two practical use cases for c...
 - [explain/hard] Explain the behavior of the `this` keyword in JavaScript, covering the four b...
 
-## closures-scope-this_20260311_002.json (15 questions)
+## 20260311_closures-scope-this_002.json (15 questions)
 - [multiple/easy] Which of the following correctly describes the order in which JavaScript trav...
 - [multiple/medium] Which of the following best describes the primary reason IIFEs (Immediately I...
 - [code/medium] What will be the output of the following code? Think about why it produces th... — function createMultiplier(x) {

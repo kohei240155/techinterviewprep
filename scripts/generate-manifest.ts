@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'fs';
 import { join, basename } from 'path';
 
 const QUESTIONS_DIR = join(__dirname, '..', 'questions');
+const JSON_DIR = join(QUESTIONS_DIR, 'json');
 const MANIFESTS_DIR = join(QUESTIONS_DIR, 'manifests');
 
 interface Question {
@@ -62,8 +63,8 @@ function summarizeQuestion(q: Question): string {
 }
 
 function extractTopicSlug(filename: string): string {
-  // e.g. closures-scope-this_20260311_001.json → closures-scope-this
-  const match = filename.match(/^(.+?)_\d{8}_\d{3}\.json$/);
+  // e.g. 20260311_closures-scope-this_001.json → closures-scope-this
+  const match = filename.match(/^\d{8}_(.+?)_\d{3}\.json$/);
   return match ? match[1] : filename.replace('.json', '');
 }
 
@@ -75,7 +76,7 @@ function main() {
   mkdirSync(MANIFESTS_DIR, { recursive: true });
 
   // Find all JSON question files
-  const allFiles = readdirSync(QUESTIONS_DIR).filter(
+  const allFiles = readdirSync(JSON_DIR).filter(
     (f) => f.endsWith('.json')
   );
 
@@ -101,7 +102,7 @@ function main() {
     const sections: string[] = [];
 
     for (const file of files) {
-      const filePath = join(QUESTIONS_DIR, file);
+      const filePath = join(JSON_DIR, file);
       const data: QuestionFile = JSON.parse(readFileSync(filePath, 'utf-8'));
 
       if (!topicName) topicName = data.topic_name;

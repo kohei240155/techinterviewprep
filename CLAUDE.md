@@ -33,9 +33,10 @@ pnpm db:import:prod   # 問題JSONファイルをDBに投入（prod）
 
 ```
 /generate-questions トピック名: 補足説明
-  → questions/{topic-slug}.json に問題を生成
+  → questions/review/{date}_{slug}_{seq}.md にレビュー用MD生成
   → レビュー・修正
-  → pnpm db:import questions/{topic-slug}.json でDB投入
+  → questions/json/{date}_{slug}_{seq}.json に変換
+  → pnpm db:import questions/json/{filename}.json でDB投入
   → pnpm db:import --dry-run ... でバリデーションのみ実行可
 ```
 
