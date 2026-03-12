@@ -50,6 +50,11 @@ pnpm db:seed:prod     # シードデータ投入（prod）
 - Server Components 優先、必要時のみ `"use client"`
 - コンポーネントは関数コンポーネント + アロー関数
 - DB列名とTypeScript型の対応を `types/index.ts` で管理
+- `globals.css` は Tailwind ディレクティブのみ — カスタムスタイルは `tailwind.config.ts` の plugin で定義
+- カラーパレット: purple ベースの `primary` (`#5200cc` = 600), surface colors (`surface-light`, `surface-dark`, `surface-elevated`)
+- アイコン: Google Material Symbols Outlined (`material-symbols-outlined` クラス)
+- `lib/topicStyles.ts` → トピック別アイコン・カラーマッピング
+- 再利用コンポーネントクラス: `.card`, `.card-interactive`, `.btn-primary`, `.btn-secondary`, `.btn-ghost`, `.badge` を Tailwind plugin で提供
 
 ## 環境変数
 

@@ -23,61 +23,68 @@ const Header = () => {
   };
 
   return (
-    <header className="border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+    <header className="sticky top-0 z-40 border-b border-primary-600/10 bg-white/80 backdrop-blur-md dark:border-primary-600/10 dark:bg-surface-dark/80">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+        {/* Left: Logo + Search */}
         <div className="flex items-center gap-6">
-          <Link href="/" className="text-xl font-bold">
+          <Link href="/" className="flex items-center gap-2 text-xl font-black tracking-tight">
+            <span className="material-symbols-outlined text-primary-600">terminal</span>
             TechPrep
           </Link>
-          <div className="hidden items-center gap-4 md:flex">
-            <Link
-              href="/"
-              className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
-            >
-              {t('nav.home', language)}
-            </Link>
-            <Link
-              href="/dashboard"
-              className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
-            >
-              {t('nav.dashboard', language)}
-            </Link>
-            {isAdmin && (
-              <Link
-                href="/admin"
-                className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
-              >
-                {t('nav.admin', language)}
-              </Link>
-            )}
+
+          {/* Desktop search (cosmetic) */}
+          <div className="hidden items-center gap-2 rounded-lg bg-primary-600/5 px-3 py-1.5 md:flex">
+            <span className="material-symbols-outlined text-lg text-gray-400">search</span>
+            <span className="text-sm text-gray-400">
+              {language === 'ja' ? '検索...' : 'Search...'}
+            </span>
           </div>
         </div>
 
-        <div className="hidden items-center gap-3 md:flex">
+        {/* Right: Desktop nav */}
+        <div className="hidden items-center gap-1 md:flex">
+          <Link href="/" className="btn-ghost">
+            {t('nav.home', language)}
+          </Link>
+          <Link href="/dashboard" className="btn-ghost">
+            {t('nav.dashboard', language)}
+          </Link>
+          <Link href="/" className="btn-ghost">
+            {t('nav.topics', language)}
+          </Link>
+          {isAdmin && (
+            <Link href="/admin" className="btn-ghost">
+              {t('nav.admin', language)}
+            </Link>
+          )}
+
+          <div className="mx-2 h-5 w-px bg-gray-200 dark:bg-gray-700" />
+
           <LanguageToggle />
           <DarkModeToggle />
+
           {!isLoading && (
             <>
               {user ? (
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 pl-2">
                   {user.user_metadata?.avatar_url && (
                     <img
                       src={user.user_metadata.avatar_url as string}
                       alt=""
-                      className="h-8 w-8 rounded-full"
+                      className="h-8 w-8 rounded-full border-2 border-primary-600/20"
                     />
                   )}
                   <button
                     onClick={handleLogout}
-                    className="rounded-md px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+                    className="btn-primary text-xs"
                   >
-                    {t('common.logout', language)}
+                    {t('common.signout', language)}
                   </button>
                 </div>
               ) : (
                 <Link
                   href="/login"
-                  className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
+                  className="btn-primary ml-2"
                 >
                   {t('common.login', language)}
                 </Link>
@@ -89,58 +96,50 @@ const Header = () => {
         {/* Mobile menu button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="rounded-md p-2 hover:bg-gray-100 dark:hover:bg-gray-800 md:hidden"
+          className="btn-ghost p-2 md:hidden"
           aria-label="Toggle menu"
         >
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            {mobileMenuOpen ? (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            ) : (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            )}
-          </svg>
+          <span className="material-symbols-outlined text-2xl">
+            {mobileMenuOpen ? 'close' : 'menu'}
+          </span>
         </button>
       </nav>
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="border-t border-gray-200 px-4 py-3 dark:border-gray-700 md:hidden">
-          <div className="flex flex-col gap-3">
+        <div className="border-t border-primary-600/10 px-4 py-3 md:hidden">
+          <div className="flex flex-col gap-1">
             <Link
               href="/"
               onClick={() => setMobileMenuOpen(false)}
-              className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+              className="btn-ghost justify-start gap-2"
             >
+              <span className="material-symbols-outlined text-lg">home</span>
               {t('nav.home', language)}
             </Link>
             <Link
               href="/dashboard"
               onClick={() => setMobileMenuOpen(false)}
-              className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+              className="btn-ghost justify-start gap-2"
             >
+              <span className="material-symbols-outlined text-lg">bar_chart</span>
               {t('nav.dashboard', language)}
+            </Link>
+            <Link
+              href="/"
+              onClick={() => setMobileMenuOpen(false)}
+              className="btn-ghost justify-start gap-2"
+            >
+              <span className="material-symbols-outlined text-lg">menu_book</span>
+              {t('nav.topics', language)}
             </Link>
             {isAdmin && (
               <Link
                 href="/admin"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+                className="btn-ghost justify-start gap-2"
               >
+                <span className="material-symbols-outlined text-lg">admin_panel_settings</span>
                 {t('nav.admin', language)}
               </Link>
             )}
@@ -149,28 +148,28 @@ const Header = () => {
               <DarkModeToggle />
             </div>
             {!isLoading && (
-              <div className="border-t border-gray-200 pt-3 dark:border-gray-700">
+              <div className="border-t border-primary-600/10 pt-3">
                 {user ? (
                   <div className="flex items-center gap-3">
                     {user.user_metadata?.avatar_url && (
                       <img
                         src={user.user_metadata.avatar_url as string}
                         alt=""
-                        className="h-8 w-8 rounded-full"
+                        className="h-8 w-8 rounded-full border-2 border-primary-600/20"
                       />
                     )}
                     <button
                       onClick={handleLogout}
-                      className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+                      className="btn-primary text-xs"
                     >
-                      {t('common.logout', language)}
+                      {t('common.signout', language)}
                     </button>
                   </div>
                 ) : (
                   <Link
                     href="/login"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400"
+                    className="btn-primary w-full"
                   >
                     {t('common.login', language)}
                   </Link>

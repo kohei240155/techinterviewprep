@@ -1,9 +1,12 @@
 const translations = {
   'home.title': { ja: 'トピック一覧', en: 'Topics' },
-  'home.subtitle': { ja: '技術面接準備アプリ', en: 'Tech Interview Prep' },
+  'home.subtitle': { ja: '北米SWE技術面接を完全攻略', en: 'Master your technical interviews' },
+  'home.subtitle2': { ja: 'JavaScript・React・フロントエンドの重要トピックを網羅的に学習', en: 'Comprehensive coverage of JavaScript, React & frontend essentials' },
+  'home.viewProgress': { ja: '進捗を見る', en: 'View Progress' },
   'nav.home': { ja: 'ホーム', en: 'Home' },
   'nav.dashboard': { ja: 'ダッシュボード', en: 'Dashboard' },
   'nav.admin': { ja: '管理者', en: 'Admin' },
+  'nav.topics': { ja: 'トピック', en: 'Topics' },
   'login.title': { ja: 'ログイン', en: 'Login' },
   'login.subtitle': { ja: 'Google アカウントでログインしてください', en: 'Sign in with your Google account' },
   'login.google': { ja: 'Google でログイン', en: 'Sign in with Google' },
@@ -29,6 +32,7 @@ const translations = {
   'dashboard.totalAnswered': { ja: '総回答数', en: 'Total Answered' },
   'common.login': { ja: 'ログイン', en: 'Login' },
   'common.logout': { ja: 'ログアウト', en: 'Logout' },
+  'common.signout': { ja: 'サインアウト', en: 'Sign Out' },
   'common.loading': { ja: '読み込み中...', en: 'Loading...' },
   'common.error': { ja: 'エラーが発生しました', en: 'An error occurred' },
   'common.retry': { ja: 'もう一度試す', en: 'Try Again' },
@@ -40,6 +44,9 @@ const translations = {
   'difficulty.easy': { ja: '易しい', en: 'Easy' },
   'difficulty.medium': { ja: '普通', en: 'Medium' },
   'difficulty.hard': { ja: '難しい', en: 'Hard' },
+  'footer.privacy': { ja: 'プライバシー', en: 'Privacy' },
+  'footer.terms': { ja: '利用規約', en: 'Terms' },
+  'footer.community': { ja: 'コミュニティ', en: 'Community' },
 } as const;
 
 type TranslationKey = keyof typeof translations;

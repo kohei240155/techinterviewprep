@@ -26,9 +26,9 @@ const StatsOverview = ({
     {
       label: t('dashboard.totalAnswered', language),
       value: totalAnswered,
-      bgClass: 'bg-blue-50 dark:bg-blue-950/30',
-      borderClass: 'border-blue-200 dark:border-blue-800',
-      textClass: 'text-blue-600 dark:text-blue-400',
+      bgClass: 'bg-primary-50 dark:bg-primary-950/30',
+      borderClass: 'border-primary-200 dark:border-primary-800',
+      textClass: 'text-primary-600 dark:text-primary-400',
     },
     {
       label: t('quiz.accuracy', language),
@@ -58,12 +58,12 @@ const StatsOverview = ({
       {cards.map((card) => (
         <div
           key={card.label}
-          className={`rounded-lg border p-4 ${card.bgClass} ${card.borderClass}`}
+          className={`rounded-xl border p-5 shadow-card ${card.bgClass} ${card.borderClass}`}
         >
           <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
             {card.label}
           </p>
-          <p className={`mt-1 text-2xl font-bold ${card.textClass}`}>
+          <p className={`mt-1 text-2xl font-bold tracking-tight ${card.textClass}`}>
             {card.value}
           </p>
         </div>

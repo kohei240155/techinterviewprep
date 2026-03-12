@@ -20,8 +20,10 @@ const DarkModeToggle = () => {
   };
 
   return (
-    <button onClick={toggle} className="rounded-md p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-      {isDark ? '☀️' : '🌙'}
+    <button onClick={toggle} className="btn-ghost p-2" aria-label="Toggle dark mode">
+      <span className="material-symbols-outlined text-xl">
+        {isDark ? 'light_mode' : 'dark_mode'}
+      </span>
     </button>
   );
 };

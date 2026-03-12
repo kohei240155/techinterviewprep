@@ -17,7 +17,7 @@ const typeLabels: Record<QuestionType, { ja: string; en: string }> = {
 };
 
 const typeColors: Record<QuestionType, string> = {
-  multiple: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
+  multiple: 'bg-primary-100 text-primary-800 dark:bg-primary-900/30 dark:text-primary-300',
   code: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
   truefalse: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
   explain: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300',
@@ -51,13 +51,13 @@ const TopicDetailPage = () => {
 
   if (error) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-center dark:border-red-800 dark:bg-red-900/20">
+      <div className="card p-6 text-center border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20">
         <p className="text-red-600 dark:text-red-400">
           {t('common.error', language)}
         </p>
         <button
           onClick={() => refetch()}
-          className="mt-4 rounded-md bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700"
+          className="mt-4 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 active:scale-[0.98]"
         >
           {t('common.retry', language)}
         </button>
@@ -90,17 +90,18 @@ const TopicDetailPage = () => {
     <div>
       <Link
         href="/"
-        className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+        className="btn-ghost inline-flex gap-1 px-0 hover:bg-transparent hover:text-primary-600 dark:hover:bg-transparent dark:hover:text-primary-400"
       >
-        &larr; {t('home.title', language)}
+        <span className="material-symbols-outlined text-lg">arrow_back</span>
+        {t('home.title', language)}
       </Link>
 
-      <h1 className="mt-4 text-2xl font-bold">
+      <h1 className="mt-4 text-3xl font-black tracking-tight">
         {t('topic.detail', language)}
       </h1>
 
-      <div className="mt-6 rounded-lg border border-gray-200 p-6 dark:border-gray-700">
-        <h2 className="text-lg font-semibold">
+      <div className="card mt-6 p-6">
+        <h2 className="text-lg font-bold">
           {t('topic.questions', language)}: {typedQuestions.length}
         </h2>
 
@@ -148,7 +149,7 @@ const TopicDetailPage = () => {
         {hasQuizQuestions && (
           <Link
             href={`/quiz/${topicId}`}
-            className="rounded-md bg-blue-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
+            className="btn-primary px-6 py-2.5"
           >
             {t('quiz.start', language)}
           </Link>
@@ -156,7 +157,7 @@ const TopicDetailPage = () => {
         {hasExplainQuestions && (
           <Link
             href={`/explain/${topicId}`}
-            className="rounded-md bg-orange-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-orange-700"
+            className="inline-flex items-center justify-center rounded-lg bg-orange-600 px-6 py-2.5 text-sm font-medium text-white transition-all duration-150 hover:bg-orange-700 active:scale-[0.98]"
           >
             {t('explain.start', language)}
           </Link>

@@ -83,7 +83,7 @@ const ChatPanel = ({ topicId, language }: ChatPanelProps) => {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition-transform hover:scale-105 hover:bg-blue-700"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary-600 text-white shadow-elevated transition-transform hover:scale-105 hover:bg-primary-700"
         aria-label={language === 'ja' ? 'AI チャットを開く' : 'Open AI Chat'}
       >
         <svg
@@ -110,7 +110,7 @@ const ChatPanel = ({ topicId, language }: ChatPanelProps) => {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex h-[500px] w-full max-w-md flex-col rounded-lg border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900">
+    <div className="fixed bottom-6 right-6 z-50 flex h-[500px] w-full max-w-md flex-col rounded-xl border border-gray-200/60 bg-white shadow-elevated dark:border-gray-700/60 dark:bg-gray-900">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3 dark:border-gray-700">
         <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
@@ -152,7 +152,7 @@ const ChatPanel = ({ topicId, language }: ChatPanelProps) => {
             <div
               className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${
                 msg.role === 'user'
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-primary-600 text-white'
                   : 'bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100'
               }`}
             >
@@ -185,13 +185,13 @@ const ChatPanel = ({ topicId, language }: ChatPanelProps) => {
             onKeyDown={handleKeyDown}
             placeholder={language === 'ja' ? '質問を入力...' : 'Type a question...'}
             disabled={isLoading}
-            className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+            className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none transition-colors focus:border-primary-500 focus:ring-1 focus:ring-primary-500 disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
           />
           <button
             type="button"
             onClick={handleSend}
             disabled={isLoading || !input.trim()}
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
+            className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700 disabled:opacity-50"
             aria-label={language === 'ja' ? '送信' : 'Send'}
           >
             <svg

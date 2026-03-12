@@ -62,12 +62,12 @@ const BookmarkList = ({ bookmarks, userId, language }: BookmarkListProps) => {
                 <div className="min-w-0 flex-1">
                   <Link
                     href={`/topics/${q.topic_id}`}
-                    className="text-sm font-medium text-gray-900 hover:text-blue-600 dark:text-gray-100 dark:hover:text-blue-400"
+                    className="text-sm font-medium text-gray-900 hover:text-primary-600 dark:text-gray-100 dark:hover:text-primary-400"
                   >
                     {language === 'ja' ? q.question_ja : q.question_en}
                   </Link>
                   <div className="mt-1 flex gap-2">
-                    <span className="inline-flex rounded px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                    <span className="badge bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400">
                       {typeLabel[q.type] ?? q.type}
                     </span>
                     <span

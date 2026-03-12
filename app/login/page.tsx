@@ -46,16 +46,16 @@ const LoginPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh]">
-      <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-        <h1 className="text-center text-2xl font-bold">
+      <div className="card w-full max-w-sm p-8 sm:p-10">
+        <h1 className="text-center text-3xl font-black tracking-tight">
           {t('login.title', language)}
         </h1>
-        <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+        <p className="mt-2 text-center text-sm text-gray-500 dark:text-gray-400">
           {t('login.subtitle', language)}
         </p>
 
         {error && (
-          <div className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+          <div className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
             {error}
           </div>
         )}
@@ -63,7 +63,7 @@ const LoginPage = () => {
         <button
           onClick={handleGoogleLogin}
           disabled={isLoading}
-          className="mt-6 flex w-full items-center justify-center gap-3 rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+          className="btn-secondary mt-6 w-full gap-3 py-2.5"
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24">
             <path

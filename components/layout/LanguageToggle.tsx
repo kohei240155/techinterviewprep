@@ -5,21 +5,19 @@ import { useLanguage } from '@/hooks/useLanguage';
 const LanguageToggle = () => {
   const { language, setLanguage } = useLanguage();
 
+  const toggle = () => {
+    setLanguage(language === 'ja' ? 'en' : 'ja');
+  };
+
   return (
-    <div className="flex rounded-md border border-gray-300 dark:border-gray-600">
-      <button
-        onClick={() => setLanguage('ja')}
-        className={`px-3 py-1 text-sm ${language === 'ja' ? 'bg-primary-600 text-white' : ''}`}
-      >
-        日本語
-      </button>
-      <button
-        onClick={() => setLanguage('en')}
-        className={`px-3 py-1 text-sm ${language === 'en' ? 'bg-primary-600 text-white' : ''}`}
-      >
-        EN
-      </button>
-    </div>
+    <button
+      onClick={toggle}
+      className="btn-ghost p-2"
+      aria-label={`Switch to ${language === 'ja' ? 'English' : '日本語'}`}
+      title={language === 'ja' ? 'English' : '日本語'}
+    >
+      <span className="material-symbols-outlined text-xl">translate</span>
+    </button>
   );
 };
 

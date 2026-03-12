@@ -95,7 +95,7 @@ const VoiceRecordButton = ({ onTranscription, disabled }: VoiceRecordButtonProps
           ? 'animate-pulse bg-red-600 hover:bg-red-700'
           : isTranscribing
             ? 'bg-gray-500'
-            : 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'
+            : 'bg-primary-600 hover:bg-primary-700'
       }`}
     >
       {isRecording && (

@@ -124,7 +124,7 @@ const QuestionCard = ({ question, language, phase, selectedIndex, onAnswer }: Qu
           type="button"
           onClick={() => handleTrueFalseSelect(null)}
           disabled={isAnswered}
-          className={`w-full rounded-lg border-2 border-dashed p-3 text-center text-sm transition-colors ${
+          className={`w-full rounded-xl border-2 border-dashed p-3 text-center text-sm transition-all duration-200 ${
             effectiveSelected === 2
               ? 'border-gray-400 bg-gray-100 dark:border-gray-500 dark:bg-gray-800'
               : 'border-gray-300 text-gray-500 hover:border-gray-400 dark:border-gray-600 dark:text-gray-400'
@@ -137,12 +137,12 @@ const QuestionCard = ({ question, language, phase, selectedIndex, onAnswer }: Qu
   };
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900">
+    <div className="card p-6 sm:p-8">
       <div className="mb-2 flex items-center gap-2">
-        <span className="rounded bg-primary-100 px-2 py-0.5 text-xs font-medium text-primary-700 dark:bg-primary-900/30 dark:text-primary-300">
+        <span className="badge bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300">
           {question.type}
         </span>
-        <span className={`rounded px-2 py-0.5 text-xs font-medium ${
+        <span className={`badge ${
           question.difficulty === 'easy'
             ? 'bg-success-100 text-success-600 dark:bg-success-900/30 dark:text-success-400'
             : question.difficulty === 'medium'
@@ -161,7 +161,7 @@ const QuestionCard = ({ question, language, phase, selectedIndex, onAnswer }: Qu
       {question.type === 'truefalse' && renderTrueFalse()}
 
       {isAnswered && explanationText && (
-        <div className="mt-6 rounded-lg border border-primary-200 bg-primary-50 p-4 dark:border-primary-800 dark:bg-primary-900/20">
+        <div className="mt-6 rounded-xl border border-primary-200 bg-primary-50 p-4 dark:border-primary-800 dark:bg-primary-900/20">
           <h4 className="mb-2 font-semibold text-primary-700 dark:text-primary-300">
             {language === 'ja' ? '解説' : 'Explanation'}
           </h4>

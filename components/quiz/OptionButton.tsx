@@ -30,9 +30,9 @@ const OptionButton = ({
       return 'border-gray-200 bg-gray-50 text-gray-400 dark:border-gray-700 dark:bg-gray-800/50 dark:text-gray-500';
     }
     if (isSelected) {
-      return 'border-primary-500 bg-primary-50 dark:bg-primary-900/20';
+      return 'border-primary-500 bg-primary-50 shadow-card-hover dark:bg-primary-900/20';
     }
-    return 'border-gray-300 hover:border-primary-400 dark:border-gray-600 dark:hover:border-primary-500';
+    return 'border-gray-300 hover:border-primary-400 hover:shadow-card dark:border-gray-600 dark:hover:border-primary-500';
   };
 
   return (
@@ -40,7 +40,7 @@ const OptionButton = ({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={`w-full rounded-lg border-2 p-4 text-left transition-colors ${getStateClasses()} ${
+      className={`w-full rounded-xl border-2 p-4 text-left transition-all duration-200 ${getStateClasses()} ${
         disabled ? 'cursor-not-allowed' : 'cursor-pointer'
       }`}
     >
